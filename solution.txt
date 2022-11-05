@@ -1,0 +1,8 @@
+1) app : il contient le main.hs qui est le point d'entree de la fonction 
+2) src : dossier qui contient les modules utiles a notre application 
+3) test : dossier qui contient les fichiers de test
+4) .gitignore, CHANGELOG.md , README.md 
+LICENSE sert pour gerer la licence du projet 
+6) le fichier lost-and-found.cabal est le fichier qui se met a jour automatiquement lance 
+la commande stack build
+7) le fichier package.yaml 
