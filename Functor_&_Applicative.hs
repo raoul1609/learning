@@ -3,9 +3,11 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use newtype instead of data" #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# OPTIONS_GHC -Wno-deferred-out-of-scope-variables #-}
+
 
 import GHC.Arr
-import Control.Applicative
+--import Control.Applicative
 import Distribution.Simple.Utils (xargs)
 import Data.Data ((:~~:)(HRefl))
 
@@ -60,7 +62,7 @@ newtype Mu f = InF { outF :: f (Mu f) }
 
 -- Mu f ne peut pas etre instance de functor car il a pour kind : (*->*)->*
 
-data D = D (Array Word Word) Int Int
+--data D = D (Array Word Word) Int Int
 
 -- D ne peut pas etre instance de funtor car il a pour sorte *
 
@@ -117,8 +119,8 @@ instance Functor (K x) where -- (le a de (K a) a pour type a)
 --3)
 newtype Flip f a b = Flip (f b a) deriving (Eq, Show)
 newtype K' a b = K' a
-instance Functor (Flip K' x) where
-    fmap f (Flip ( K' x)) = Flip (K' (f x))
+instance Functor (Flip K x) where
+    fmap f (Flip ( K x)) = Flip (K (f x))
 
 --4)
 data EvilGoateeConst a b = GoatyConst b
@@ -176,4 +178,146 @@ instance Functor GoatLord where
     fmap f (MoreGoats x  y  z) = MoreGoats (fmap f x) (fmap f y) (fmap f z)
 
 --11)
+data TalkToMe a = Halt | Print String a | Read (String -> a)
 
+instance Functor TalkToMe where 
+    fmap :: (a-> b) -> TalkToMe a -> TalkToMe b 
+    fmap f Halt = Halt 
+    fmap f (Print x y) = Print x (f y)
+    fmap f (Read g) = Read (f.g)
+
+--5
+
+--1)
+-- type : []
+
+-- pure :: a -> [a]
+-- (<*>) :: [a-> b] -> [a] -> [b]
+
+-- --2)
+-- -- type IO
+-- pure :: a -> IO a
+-- (<*>) :: IO (a -> b) -> IO a -> IO b
+
+-- --3)
+-- -- type (,) a
+-- instance Applicative ((,) a) where 
+-- pure :: a -> (a,a) 
+-- (<*>) :: (a,a -> b) -> (a,a) -> (a,b)
+
+-- --4)
+-- -- type (->) e
+-- pure :: a -> (e -> a)
+-- (<*>) :: (e -> a -> b) -> (e -> a) -> (e -> b)
+
+-- 6
+--1)
+data Pair a = Pair a a deriving Show
+
+instance Functor Pair where 
+    fmap :: (a->b) -> Pair a -> Pair b
+    fmap f (Pair x y) = Pair (f x) (f y) 
+
+instance Applicative Pair where 
+    pure x = Pair x x 
+    (Pair f g) <*> (Pair x y) = Pair (f x) (g y) 
+
+--2) 
+data Two a b = Two a b
+
+instance Functor (Two a) where 
+    fmap f (Two x y) = Two x (f y)
+
+instance Applicative (Two Int) where -- il faut specifier l'instance de Applicative a un type contrait sinon erreur
+    pure a = Two 0 a
+    (Two _ f) <*> (Two _ y) = Two 0 (f y)
+    
+--3)
+data Three a b c = Three a b c
+
+instance Functor (Three v w) where 
+    fmap f (Three x y z) = Three x y (f z)
+
+instance Applicative (Three Int Int) where 
+    pure t = Three 0 1 t 
+    (Three _ _ f) <*> (Three _ _ l) = Three 0 0 (f l) 
+
+--4)
+data Three' a b = Three' a b b 
+
+instance Functor (Three' x) where 
+    fmap f (Three' x y z) = Three' x (f y) (f z)
+
+instance Applicative (Three' Int) where 
+    pure t = Three' 0 t t 
+    (Three' x f g) <*> (Three' y v w) = Three' (x+y) (f v) (g w)
+
+--5)
+data Four a b c d = Four a b c d 
+
+instance Functor (Four j k l) where 
+    fmap f (Four x y z w) = Four x y z (f w)
+
+instance Applicative (Four String String String) where 
+    pure t = Four [] [] [] t 
+    (Four _ _ _ f) <*> (Four _ _ _ t) = Four [] [] [] (f t)
+
+--6)
+data Four' a b = Four' a a a b  -- molto importante per capire questo capitolo
+
+instance Functor (Four' a) where -- le constructeur de donnees du type Four' prend 3 elements de type a et un de type b
+    fmap f (Four' x y z l) = Four' x y z (f l) 
+
+instance Applicative (Four' Int) where 
+    pure u = Four' 0 1 2 u
+    (Four' _ _ _ f) <*> (Four' _ _ _ x) = Four' 1 2 3 (f x)
+
+--7
+  --1)
+
+newtype Pairs a b = Pairs (a,b) deriving Show
+
+instance Functor (Pairs x) where 
+    fmap f (Pairs (a, x)) = Pairs (a, f x)
+
+instance Applicative (Pairs (Maybe Int)) where 
+    pure x = Pairs (Nothing ,x)
+    (Pairs (_,f)) <*> (Pairs (_,y)) = Pairs (Nothing , f y)
+
+  --2)
+newtype Assoc a b = Assoc { getPairs :: [(a,b)] } 
+
+instance Functor (Assoc x) where 
+    fmap f (Assoc []) = Assoc []
+    fmap f (Assoc [(x,y)]) = Assoc [(x,f y)]
+    fmap f (Assoc xs) = Assoc (map (\(a,x) -> (a, f x)) xs)
+    
+type Assoc' a b = [(a,b)]
+
+amap :: (b -> c) -> Assoc' a b -> Assoc' a c
+amap f ps =  (map (\(a,y) -> (a, f y)) ps)
+
+instance  Applicative (Assoc (Maybe Int)) where 
+    pure x = Assoc [(Nothing ,x)] -- une liste contenant un couple 
+    (Assoc []) <*> _ = Assoc [] 
+    (Assoc [(_, f)]) <*> (Assoc []) = Assoc []
+    (Assoc [(a, f)]) <*> (Assoc [(b, x)]) = Assoc [(Nothing  , f x)]
+    Assoc fs  <*> Assoc xs = let liste1 = [snd x | x <- fs]
+                                 liste2 = [snd y | y <- xs]
+                             in Assoc [(fst i, f j) | i <- xs , f <- liste1, j <- liste2]
+
+type AssocMap a b c = [(a,b->c)]
+
+-- pour que (AssocMap a b c) soit une instance de Functor il ne doit pas etre un synonyme de type 
+
+newtype AssocMap' a b c = AssocMap' {getAssoc :: [(a, b -> c)]}
+
+mmap :: (c -> d) -> AssocMap a b c -> AssocMap a b d
+mmap f assocmap = [(a, fmap f g ) | (a, g) <- assocmap]
+
+instance Functor (AssocMap' x y) where 
+    fmap f x = AssocMap' [(a, fmap f h) | (a, h) <- getAssoc x]
+
+instance Applicative (AssocMap' Int Int ) where 
+    pure x = AssocMap' [(0 , \0 -> x)]
+    u <*> v = AssocMap' [(0 , f <*> x) | (0,f) <- getAssoc u , (0,x) <- getAssoc v ]
