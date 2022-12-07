@@ -20,13 +20,18 @@ instance Functor Tree where
     fmap f (Node x []) = Node (f x) []
     fmap f (Node x ys) = Node (f x) (map (fmap f) ys )
     fmap f (Node x (y:ys)) = Node (f x) (fmap f y : map (fmap f ) ys)
+    
 
 instance Applicative Tree where
       pure x = Node x []
       EmptyTree <*> _ = EmptyTree
       _ <*> EmptyTree = EmptyTree
-      Node f fss <*> Node x ys = Node (f x) ([(<*>) g y | g <- fss , y<- ys])
+      Node f fss <*> Node x ys = Node (f x) ([fmap f i | i <- ys] ++ [(<*>) g (Node x ys)| g <- fss])
 
+    --   -- instance Applicative Tree where
+    --         pure x = Node x []
+    --         Node f tfs <*> tx@(Node x txs) =
+    --         Node (f x) (map (f <$>) txs ++ map (<*> tx) tfs)
 --2 
 
 data Bool = False | True
