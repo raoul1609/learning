@@ -122,6 +122,7 @@ testParser = do
 fonctionTestParser :: String -> Either ParseError String
 fonctionTestParser = parse testParser "erreur survenue : personnalise"
 
+-- parser pour une donne de type ReferenceTransac
 
 parserRefTransac :: Parser ReferenceTransac
 parserRefTransac = do
@@ -171,8 +172,8 @@ parserMessage = do
         paiement = P {soldeCourant = read solde :: Int, infoTransaction = transac, infoFacture = fact}
     return paiement
 
--- comment faire pour appeler l'erreur de parserRefTransac dans message fonv
 
+-- fonction qui fait le parsing d'un message contenu dans un fichier 
 message :: IO ()
 message = do
     result <- parseFromFile parserMessage "messages.txt"
@@ -180,3 +181,5 @@ message = do
         where f :: Either ParseError Paiement -> String
               f (Right x) = show x
               f (Left y) = show y
+
+-- comment faire pour appeler l'erreur de parserRefTransac dans message fonv
