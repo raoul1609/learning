@@ -15,7 +15,7 @@ def whatColor (nbre) :
     else : return "rouge"
 
 def verite (val = True) :
-    something = input ("voulez vouz continuer la partie ? oui ou non ")
+    something = input ("voulez vous continuer la partie ? oui ou non ")
     if something == "oui" : return val
     else : return False
 
@@ -24,19 +24,20 @@ def verite (val = True) :
 # tant que continuer == True , la partie continue 
 while continuer :
     #     # tant de le solde n'est pas negatif, la partie continue
-    while solde > 0 and i :
+    while solde > 0 :
              # while there are enough money, we ask him to choice a number 
         var =  (input ("choisir un nombre entre 0 et 49 : "))
-        vartoint = int (var)
+        #vartoint = int (var)
         try :
-            vartoint
+            vartoint = int (var)
             assert vartoint > 0 and vartoint < 49
         except ValueError :
             print ("veuillez entrer un nombre entier")
-            i = 0 
+            continue
         except AssertionError : 
             print ("le nombre entre doit etre positif et compris entre 0 et 49") 
-            i = 0   
+            continue  
+        i = 1
         #         # we ask him how much to bid
         while i == 1 : 
             inputmoney = input ("combien souhaites-tu miser ?")
@@ -46,10 +47,10 @@ while continuer :
                 assert money <= solde   
             except ValueError  : 
                 print ("veuillez saisir des nombres positifs")
-                i = 0
+                continue
             except AssertionError :
                 print ("ta mise ne doit pas depasser ton solde courant qui est {}".format (solde))
-                i = 0    
+                continue    
                 # l'argent mise ne doit pas depasser le solde courant 
             if vartoint == randomVar :
                 print ("nombre exact: {} ". format (randomVar) )
@@ -57,16 +58,21 @@ while continuer :
                 solde = (solde + (3*money))
 
             elif whatColor (vartoint) == whatColor (randomVar) :
-                print ("tu as trouve seulement la couleur, tu recois ", (ceil (money/2)), "$")
+                print ("tu as trouve la couleur, tu recois ", (ceil (money/2)), "$")
                 solde = (solde + ceil (money/2))
                     
             else : 
                 print ("tu n'as pas trouve le bon numero, ni la bonne couleur, tu as perdu ta mise ")
                 solde = solde - money 
             i = 0
-    print ("il te reste : {} ".format (solde))
-    continuer = verite ()
-print ("ok, le casino est toujours ouvert pour toi")
+        print ("il te reste : {} ".format (solde))
+        continuer = verite ()
+        if continuer == False :
+            solde = - solde
+        elif solde > 0 : continue
+        else : print ("desole, tu n'as plus rien !, il te reste {}".format(solde))
+    continuer = False 
+print ("good bye,le casino est toujours ouvert pour toi !!")
 
         
 
