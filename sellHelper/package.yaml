@@ -24,7 +24,7 @@ dependencies:
 - time
 - aeson
 - parsec
-- mysql 
+- mysql-simple
 
 ghc-options:
 - -Wall
