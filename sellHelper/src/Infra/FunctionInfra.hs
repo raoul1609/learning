@@ -49,3 +49,13 @@ readCommande = undefined
 -- fonction qui ressort la liste des clients d'une semaine : qui prend Idpage -> [Client]
 listClientByWeek :: String -> IO [Client]
 listClientByWeek = undefined
+
+-- # 
+-- fonction pour obtenir tous les payements d'une commande 
+allPayement :: String -> IO [Payement]
+allPayement = undefined 
+
+-- fonction qui enregistre le payement d'une commande 
+
+savePayement :: Payement -> IO ()
+savePayement = undefined 

@@ -14,13 +14,13 @@ data Calibre  = P | M | G deriving (Read, Show , Eq)
 $(deriveJSON defaultOptions ''Calibre)
 
 
-data PayementBy a b  = Cash a  | Avance b deriving (Show,Read,Eq)
+data PayementBy  = Cash Int | Avance Int deriving (Show,Read,Eq)
 $(deriveJSON defaultOptions ''PayementBy)
 
 
 data Payement = Payement {
     jourPayement :: Day,  -- le jour de payement doit etre dans la semaine correspondante 
-    paimentHow :: PayementBy Int Int ,
+    paimentHow :: PayementBy ,
     commande :: String
 } deriving (Show,Eq,Read)
 $(deriveJSON defaultOptions ''Payement)
@@ -33,7 +33,7 @@ data Commande = Commande {
     calibre :: Calibre,
     prixUnitaireAlveole :: Int, 
     dateCommande :: Day,
-    commandeLivre :: Bool,
+    --commandeLivre :: Bool,
     payement :: Payement
     } deriving (Show, Eq, Read)
 $(deriveJSON defaultOptions ''Commande)
