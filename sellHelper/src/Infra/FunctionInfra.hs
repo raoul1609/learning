@@ -3,7 +3,7 @@ module Infra.FunctionInfra where
 
 import Types 
 
-
+{- je dois avoir une bd avec plusieurs tables : payement , commande , client -}
 
 -- #
 -- fonction qui permet de sauvegarder un nouveau client
@@ -29,7 +29,7 @@ readPage = undefined
 
 
 -- #
--- prend l'id d'une page, et me ressort tous les client de cette semaine la. ce n'est pas l'id de la bd
+-- prend l'id d'une page, et me ressort tous les clients de cette semaine la. ce n'est pas l'id de la bd
 -- fonctionnalite1 : me donner liste des clients par semaine  
 readClientByPage :: String -> IO [Client]
 readClientByPage = undefined 
@@ -59,3 +59,18 @@ allPayement = undefined
 
 savePayement :: Payement -> IO ()
 savePayement = undefined 
+
+-- fonction qui me sort tous les payements dans la table payement de la bd
+
+listOfAllPayement :: IO [Payement]
+listOfAllPayement = undefined
+
+-- fonction pour enregistrer les factures de bamena de chaque semaine 
+
+saveFactureBamena :: FactureBamena -> IO ()
+saveFactureBamena = undefined
+
+-- facture pour lire les factures de bamena dans la bd
+
+readFactureBamena :: IO [FactureBamena]
+readFactureBamena = undefined

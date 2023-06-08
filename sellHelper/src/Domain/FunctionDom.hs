@@ -16,11 +16,17 @@ type IdOfPage = String
 type IdCommande = String 
 type Qte = Int
 type PrixUnitAlveole = Int
+type ResteIfAvance = Int
 type DateCommande = Day
 type JourDePayement = Day
 type MoyenDePayement = PayementBy
 type NomDeCommandePaye = String 
---type CommandeLivre = Bool
+type CommandePaye = Bool
+
+type Transport = Int
+type Quantite = Int
+type DateArrivage = String 
+type Total = Int
 
 
 
@@ -34,7 +40,7 @@ createClient = Client
 -- #
 -- fonction pour creer une nouvelle commande 
 
-createCommande :: IdCommande -> NomDuClient -> Qte -> Calibre -> PrixUnitAlveole -> DateCommande -> Payement -> Commande
+createCommande :: IdCommande -> NomDuClient -> Qte -> Calibre -> PrixUnitAlveole -> ResteIfAvance -> DateCommande -> Payement  -> CommandePaye -> Commande
 createCommande = Commande
 
 
@@ -65,6 +71,13 @@ parserPayementBy = do
         (string "Avance" >> spaces >> many digit >>= (\y -> return $ Avance (read y :: Int)))
 
 verifPayementBy :: String -> Either ParseError PayementBy
-verifPayementBy = parse parserPayementBy "soit tu payes en Cash, soit tu Avances !"
+verifPayementBy = parse parserPayementBy "soit tu payes en Cash, soit tu fais una avance !"
+
+
+-- #
+-- fonction pour construire un element de type factureBamena
+
+buildFactureBamena :: Transport -> Quantite -> DateArrivage -> Total -> FactureBamena
+buildFactureBamena = Bamena
 
 
