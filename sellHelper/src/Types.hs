@@ -25,16 +25,17 @@ data Payement = Payement {
 } deriving (Show,Eq,Read)
 $(deriveJSON defaultOptions ''Payement)
 
--- par defaut la commande est non livree, lorsqu'il paye la commande mise a jour et devient livree
+
 data Commande = Commande {
     idCommande :: String,
     nomClient :: String,
     quantite :: Int,
     calibre :: Calibre,
-    prixUnitaireAlveole :: Int, 
-    dateCommande :: Day,
-    --commandeLivre :: Bool,
-    payement :: Payement
+    prixUnitaireAlveole :: Int,
+    resteIfAvance :: Int,
+    dateCommande :: Day, 
+    payement :: Payement,
+    commandIsDone :: Bool
     } deriving (Show, Eq, Read)
 $(deriveJSON defaultOptions ''Commande)
 
@@ -51,11 +52,10 @@ $(deriveJSON defaultOptions ''Client)
 
 -- FactureBamena: type pour materialiser une facture du fournisseur 
 data FactureBamena = Bamena {
-    prixAchat :: Int,
     transportParCarton :: Int,
-    casses :: Int,
     quantites :: Int,
-    dateArrivage :: Day} deriving (Eq, Read, Show)
+    dateArrivage :: String,
+    total :: Int } deriving (Eq, Read, Show)
 $(deriveJSON defaultOptions ''FactureBamena)
 
 
@@ -79,3 +79,18 @@ data Page = Page {
     factureSemaine :: FactureBamena
   } deriving (Show, Eq, Read)
 $(deriveJSON defaultOptions ''Page)
+
+-- un type pour representer mes versements 
+
+data MezzoPagamento = MobileMoney String | Banque String  deriving (Show,Eq,Read)
+$(deriveJSON defaultOptions ''MezzoPagamento)
+
+
+data Versement = Versement {
+    sommeVersee :: Int 
+    dateVersement :: String
+    versementHow :: MezzoPagamento
+    whichFacture :: FactureBamena
+} deriving (Show, Eq, Read)
+$(deriveJSON defaultOptions ''Versement)
+
