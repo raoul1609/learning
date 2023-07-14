@@ -1,2 +1,0 @@
-- acces a distance aux donnees de mes ventes
-- a chaque fois que j'ouvre le cahier modifier une donnee je dois y mettre la date du jour 
