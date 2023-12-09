@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+}
+
+section {
+    padding: 80px;
+}
+
+
+.centralisation {
+    margin: auto;
+    width: 50%;
+}
+
+a {
+    color:#242424;
+    font-size: 1em;
+    text-decoration: none;
+    font-family: 'Manrope', sans-serif;   
+}
+
+a:hover {
+    text-decoration: underline; /*pseudo-classe pour souligner les liens au survol*/
+}
+
+/* tous les liens avec l'attribut degrade, doivent avoir un degradé au survol*/
+a[class="degrade"]:hover {
+    background: linear-gradient(#696484, #8788BA);
+    text-decoration: none;
+    
+}
+
+.une_classe {
+    color: #A5B4FC;
+}
+
+p {
+    text-align: justify;
+    font-size: 1.1em;
+    font-family: 'Manrope', sans-serif;
+    color: #F9F8FF;
+    /*background-color: green;*/
+    /*width: 50%;*/
+    padding: 20px;
+    margin: 20px;
+}
+
+ul {
+    font-size: 1em;
+    font-family: 'Manrope', sans-serif;
+    color: #F9F8FF;
+    padding: 10px;
+    margin: 10px;
+}
+
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    color: #A5B4FC;
+    font-size: 3.5em;
+    text-align: center;
+    /*text-shadow: 3px 3px 0px rgba(250, 247, 247,0.05);*/
+}
+
+h2 {
+    color: #F9F8FF;
+    padding: 10px;
+    margin: 10px;
+}
+
+/*applique la couleur a toute balise a qui se trouve dans <li>, li qui se trouve dans <ul>
+    ul qui se trouve dans <nav>*/
+nav ul li a {
+    color: #F9F8FF;
+}
+
+/* pour que le coeur de la page ait une couleur */
+body {
+    background-color: #1F2039;
+    font-size: 1em;
+    font-family: 'Manrope', sans-serif;
+    margin: 1;
+    /*width: 50px;*/
+    padding: 10px;
+    color: white;
+}
+.couleur_de_fond {
+    background-color: white;
+}
+
+.degrade {
+    background: linear-gradient(#8e86b5, #acaeed);
+    color: white;
+    border-radius: 50px;
+    box-shadow: 6 6 0 rgba(255,255,255);
+    padding: auto;
+  }
+
+.bordure {
+    border-left: #8e86b5, 1px;
+}
+
+
+.something {
+    display: flex;
+    flex-direction: row;
+    gap: 200px;
+    align-items: center;
+}
+
+footer, nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+ 
+  
+}
+
+.test {
+    display: flex;
+    flex-direction: row;
+    /*justify-content: space-around;*/
+    gap: 100px;
+}
+
+.accueil-introduction {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    align-items: center;
+    margin: auto;
+}
