@@ -13,7 +13,12 @@
 
 ##-- demarrer la syncrhonisation avec la blockchain (le reseau pre-prod) --##
 
-cardano-node run --topology cardano/pre-production/config-preprod/topology.json --database-path cardano/pre-production/db --socket-path cardano/pre-production/db/node.socket --host-addr 0.0.0.0 --port 3001 --config cardano/pre-production/config-preprod/config.json
+cardano-node run --topology cardano-src/cardano-node/config_preprod/topology.json --database-path cardano-src/cardano-node/config_preprod/db --socket-path cardano-src/cardano-node/config_preprod/db/node.socket --host-addr 0.0.0.0 --port 3001 --config cardano-src/cardano-node/config_preprod/config.json
+
+
+apres avoir refait mon systeme : 
+
+cardano-node run --topology cardano-src/cardano-node/config_preprod/topology.json --database-path cardano-src/cardano-node/config_preprod/db --socket-path cardano-src/cardano-node/config_preprod/db/node.socket --host-addr 0.0.0.0 --port 3001 --config cardano-src/cardano-node/config_preprod/config.json
 
 rmq : si on veut demarrer un autre reseau (mainnet, preview) que le pre-prod il faut changer les fichiers de configurations
 
@@ -24,7 +29,7 @@ cardano-node run --topology cardano/preview-network/preview-config/topology.json
 
 -- je dois me deplacer jusqu'au repertoire de db avant de taper la commande export, en fait node.socket doit etre dans le repertoire db
 
-export CARDANO_NODE_SOCKET_PATH=<YOUR PATH TO>/cardano/pre-production/db/node.socket
+export CARDANO_NODE_SOCKET_PATH=<YOUR PATH TO>
  
 
 
@@ -95,8 +100,8 @@ cardano-cli transaction build \
 --change-address $SENDERADDRESS \
 --out-file simple-tx.raw
 
-NB : - quand on construit la transaction (cardano-cli transaction build) c'est nous qui precisons les utxo en sortie (tx-out), on lister
- les utx en entree (tx-in) si il y en a plusieurs et les utxo de sortie si il y ene a plusieurs !
+NB : - quand on construit la transaction (cardano-cli transaction build) c'est nous qui precisons les utxo en sortie (tx-out), on liste
+ les utx en entree (tx-in) si il y en a plusieurs et les utxo de sortie si il y en a plusieurs !
      - lorsque que nous voulons construire une transac, le utxo (qu'on veut mettre en entree a une nouvelle transac) est represente par le hash de la transaction dont il est issu et l'indice de cette transaction (somename=hashtransac#transacindex). somename est le nom de la variable qu'on passe a tx-in
      SENDERADDRESS c'est l'adresse de depart, l'adresse de l'expediteur
      RECIPIENT_ADDRESS = c'est l'addresse  du destinataire 
@@ -339,5 +344,538 @@ pour faire un requete en utilisant l'api de blockfrost :
   	 - la requette change en fonction du reseau (mainnet, preprod , preview)
   
  voila ce que j'obtient : un JSON {"address":"addr_test1qrfvl09vznmcqth7mdrvhlvj8rwyx4x22k7kgs7st7e9cmgeswxsf9fae0wj4e3st46hung22dfgaqytuw78z5el86cqrxs0d8","amount":[{"unit":"lovelace","quantity":"9901457647"}],"stake_address":"stake_test1uqvc8rgyj57uhhf2ucc96at7f599x55wsz9780r32vlnavqy62722","type":"shelley","script":false}
+ 
+ 
+ 
+ # off-chain code VS on-chain code 
+ 
+ 
+ on-chain code : 
+ 
+ 
+ 
+ ------------------ ====== cas pratiques sur le cardano-cli : ===== ----------------------------------------------------------
+ 
+ 1 - construire l'addresse d'un script ( le gifts du Week2) 
+ 
+ cardano-cli address build --payment-script-file $cat ./assets/gift.plutus --testnet-magic 1
+ 
+ resultat : addr_test1wqag3rt979nep9g2wtdwu8mr4gz6m4kjdpp5zp705km8wys6t2kla
+ 
+ 
+ 2 - pour construire le redeemer j'utilise la fonction writeDataToFile du module Serialise.hs 
+ 
+ writeDataToFile "/workspace/code/Week02/homework/raoulRedeemer.json" (BuiltinData (I 42))
+ 
+ rmq : cette commande amrche aussi comme ceci : writeDataToFile "/workspace/code/Week02/homework/raoulRedeemer.json" 42
+ 
+ 
+ 3 - j'essaye de consommer un utxo, du script fortyTwo, le utxo n'est consommé que lorsque le redeemer vaut 42
+ 
+ ---------------------- avec le cli -----------------------
+ 
+ cardano-cli transaction build --testnet-magic 1 --tx-in 74b6434f4ee1ff0487e98876c4aed88c1ad007561ffaecb428c8e2736d635cc0#0 --tx-in-script-file /home/nkalla/plutus-pioneer-program/code/Week02/assets/fortytwo.plutus --tx-in-inline-datum-present --tx-in-redeemer-file /home/nkalla/plutus-pioneer-program/code/Week02/homework/raoulRedeemer.json  --tx-in-collateral 1e93b03d66d70867b5965a6a1b9be66ddc9cca60b81ff8a6f2069ad57aaa66e5#1 --change-address addr_test1wpqlfqjt8czqmd6dqxrxvdr8tp8gt4a8xg40d6jzs9wx7fg93pm8a --out-file raoul-fortyTwo.raw
+ 
+ interpretation :
+ - c'est une tx qui retire le utxo du script et le remet sans le toucher : c'est juste pour tester sa logique
+ - en entree a cette tx, je mets le utxo a consommer qui provient du script. car le script ne se lance que si un de ses utxos 
+ veut etre consommer par une tx.
+ - le collateral  est un utxo present dans mon wallet, le wallet dans lequel je construit la tx, qui va servir pour payer en cas d'echec a la deuxieme phase, sinon les fees seront coupes dans le utxo du script.
+ 
+ resultat : Estimated transaction fee: Lovelace 173124
+ 
+ 
+ je signe la transaction avec ma cle prive : 
+ 
+ cardano-cli transaction sign --signing-key-file /home/nkalla/monWallet/privateKey.skey --testnet-magic 1 --tx-body-file raoul-fortyTwo.raw --out-file raoul-fortyTwo.signed
+ 
+ 
+ je soumets la tx : 
+ 
+ cardano-cli transaction submit --tx-file raoul-fortyTwo.signed --testnet-magic 1
+ 
+ resultat :  Transaction successfully submitted.
+ 
+ 
+ ----------------- essayons avec blockfrost ------------------------------
+ 
+mes remarques : 
+
+- blockfrost est un API, c'est un moyen pour interagir avec la blockchain cardano. on pourrait aussi utiliser cardano-cli,
+ou bien db-sync pour le meme travail
+
+- blockfrost n'a pas de fonction pour construire une transaction.
+
+- comment faire un off-chain code avec haskell : j'ai deja experimente l'appel du cli dans le code, mais est ce la bonne methode ?
+
+
+--------------===== j'essaye de faire les exercices du week4 de plutus pioneer programm ===== -----------
+
+construit un datum de type : MisteryDatum 
+
+- activer le -XOverloadedString 
+- le posixTime :  let val =  POSIXTime 2023-08-16
+- misteryDatum = MisteryDatum (PubKeyHash "91dbe3d70568b1ada2b0f059a8394dffb8fa632214c42c66f87fde95") (PubKeyHash "2fd3140fe8c8c05556b041cbab2132b7b0070ef603b9098368609d8a") val 
+
+
+
+
+
+
+------------------------------------== test du code offchain du script de la tontine ==-----------------------------------
+
+-- j'ai monte un projet cabal, dans lequel j'ai copié le projet Utilities  de plutus pioner program.
+-- j'ai cree le fichier cabal.project dans lequel j'ai copie le cabal.project de plutus pionner programm, et j'ai supprime
+tous les Week et laisser seulement utilities le (.) dans Packages.
+-- je vais utiliser le moduler System.Process pour appeler le cli dans le code.
+-- il ne faut pas oublier de faire :set -XOverloadedStrings avant de taper les commandes pour contruire les donnees ( redeemer et datum) dans vscode. 
+-- pour indiquer le chemin a saveDataToFile pour sauvegarder le redeemer et le datum, il faut passer le chemin absolu 
+	exemple : /home/nkalla/Documents/testData/datum.json.
+	
+-- la premiere tx est pour fermer la tontine, cad mettre un utxo avant un datum contenant CLOSE dans le wallet du script. en realite c'est un tx normale entre deux adresses. 
+-- pour ouvrir la tontine il faut que le status soit ferme : donc il fautr un utxo avec un datum CLOSE dedans ( c'est la logique de notre script).
+
+---------------------------------------- on construit la tx pour fermer la reunion --------------------------------------
+
+cardano-cli transaction build --tx-in 87e7655725d701b708909bf5db8e652e53acc18a66e7cc5a9cb8f8ffa3b7d3e6#1 --tx-out $(cat /home/nkalla/tontineAddr)+1500000  --tx-out-inline-datum-file /home/nkalla/Documents/testData/datum2.json --change-address $(cat /home/nkalla/monWallet/raoul.addr) --testnet-magic 1 --out-file changeStatus-unsigned
+
+1 - commentaires : 
+	-- en entree de la tx  il y a le utxo du wallet ( de celui qui fait la tx) dans lequel on va retirer les 1500000 lovelaces.
+	-- on construit un datum avec la fonction savaDataToFile qui est dans le code onchain.
+	
+2 - resultat : 
+Estimated transaction fee: Lovelace 169637
+
+--------------------------------------------- on signe la tx -------------------------------
+
+cardano-cli transaction sign --tx-body-file changeStatus-unsigned --signing-key-file  /home/nkalla/monWallet/privateKey.skey --testnet-magic 1 --out-file changeStatus-signed
+
+------------------------------------- on submit la tx --------------------------
+
+cardano-cli transaction submit --tx-file changeStatus-signed --testnet-magic 1
+Transaction successfully submitted
+
+
+-------------------------------- quand je fais le query utxo de l'addresse du script  -------------------------------------
+
+cardano-cli query utxo --testnet-magic 1 --address $(cat /home/nkalla/tontineAddr)
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+87e7655725d701b708909bf5db8e652e53acc18a66e7cc5a9cb8f8ffa3b7d3e6     0        10000000 lovelace + TxOutDatumNone
+e30fbb11283895de8422e7b938289077b84d839c7356b49bb04916faee5a1437     0        1500000 lovelace + TxOutDatumInline ReferenceTxInsScriptsInlineDatumsInBabbageEra (HashableScriptData "\216y\159\216y\159ECLOSE\255\216y\159Ipresident\255\216y\159IpresidentEraoulE12236\255\255" (ScriptDataConstructor 0 [ScriptDataConstructor 0 [ScriptDataBytes "CLOSE"],ScriptDataConstructor 0 [ScriptDataBytes "president"],ScriptDataConstructor 0 [ScriptDataBytes "president",ScriptDataBytes "raoul",ScriptDataBytes "12236"]]))
+
+
+--------------------- la tontine est fermee, essayons de tontiner pour voir le message qui s'affiche ---------------
+
+1 - on construit une tx pour tontiner :
+
+cardano-cli transaction build --tx-in e30fbb11283895de8422e7b938289077b84d839c7356b49bb04916faee5a1437#1 --tx-in e30fbb11283895de8422e7b938289077b84d839c7356b49bb04916faee5a1437#0 --tx-in-inline-datum-present --tx-in-script-file /home/nkalla/Documents/tontine.plutus --tx-in-redeemer-file /home/nkalla/Documents/testData/tontineRedeemer.json --tx-in-collateral e30fbb11283895de8422e7b938289077b84d839c7356b49bb04916faee5a1437#1 --tx-out $(cat /home/nkalla/tontineAddr)+1500000 --tx-out-inline-datum-file /home/nkalla/Documents/testData/datum.json --tx-out $(cat /home/nkalla/tontineAddr)+100000000 --change-address $(cat /home/nkalla/monWallet/raoul.addr) --testnet-magic 1 --out-file tontine-unsigned
+
+-- le redeemer sert a indiquer l'action qu'on souhaite effectuer : tontiner, fermer ou ouvrir ,...
+-- en entree de la tx, il faut un utxo du script pour qu'il puisse se declencher et un utxo de celui qui effectue la tx cad celui qui veut tontiner. 
+	rmq : il faut mettre le utxo du script qui a le datum CLOSE.
+-- le --tx-in-inline-datum-present : permet de signaler que le utxo qui precede contient un datum.
+-- le collateral est pris dans le utxo de celui qui effectue la tx, celui qui souhaite tontiner 
+-- en sortie de la tx il y a premierement  un utxo pour l'addresse du script dans lequel on met le nouveau datum, car l'ancien a ete consommé
+-- --tx-out $(cat /home/nkalla/tontineAddr)+1500000 --tx-out-inline-datum-file /home/nkalla/Documents/testData/datum.json : 
+ceci veut dire que le datum (datum.json)  est inseré dans le utxo (qui vaut 1500000) qui va dans tontineAdrr. en fait quand on veut mettre un datum dans une addresse en sortie d'une tx c'est comme ca qu'on procede.
+-- en sortie de la tx on a deuxiemement, le utxo de la tontine, qui vaut le montant de tontine qui est de 100 tAda, dans lequel on peut mettre un datum ou pas!, dans ce cas ci je n'ai pas mis.
+-- en fin on envoie le reste a l'addresse de celui qui tontine.
+
+2 - resultat : 
+
+Command failed: transaction build  Error: The following scripts have execution failures:
+the script for transaction input 0 (in the order of the TxIds) failed with: 
+The Plutus script evaluation failed: An error has occurred:  User error:
+The machine terminated because of an error, either from a built-in function or from an explicit use of 'error'.
+Script debugging logs: Merci de verifier que vous avez suffisament de fond ou que la tontine est deja ouverte
+PT5
+
+commentaire du resultat : c'est normal d'avoir ce resultat car on essaye de tontiner dans une reunion qui est fermee. maintenant on va ouvrir la reunion et essayer de tontiner a nouveau.
+
+-------------------------------- tx pour ouvrir la reunion ----------------------
+
+la logique du script dit que pour ouvrir la reunion il faut etre parmi ceux qui ont le pouvoir de le faire, cette logique c'est le paramsData qu'on a utilise pour generer le fichier tontine.plutus de notre script. dans cette variable de type ParamsData on a indique la liste des hash de ceux qui peuvent ouvrir la tontine, le montant minimal, la liste des hash des membres de la reunion, etc ... 
+voici le paramsData que j'ai utilise pour genere tontine.plutus : 
+
+someParams = ParamsData 100 [PubKeyHash "91dbe3d70568b1ada2b0f059a8394dffb8fa632214c42c66f87fde95", PubKeyHash "2fd3140fe8c8c05556b041cbab2132b7b0070ef603b9098368609d8a"] [PubKeyHash "91dbe3d70568b1ada2b0f059a8394dffb8fa632214c42c66f87fde95", PubKeyHash "2fd3140fe8c8c05556b041cbab2132b7b0070ef603b9098368609d8a"] ["raoul", "wimpro"]
+
+
+et donc pour ouvrir la reunion on change juste le datum, et on met a OPEN
+
+1 - premierement construisons un datum avec OPEN 
+
+-- voila l'etat de l'addresse du script : il est CLOSE
+
+cardano-cli query utxo --testnet-magic 1 --address $(cat /home/nkalla/tontineAddr)
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+87e7655725d701b708909bf5db8e652e53acc18a66e7cc5a9cb8f8ffa3b7d3e6     0        10000000 lovelace + TxOutDatumNone
+e30fbb11283895de8422e7b938289077b84d839c7356b49bb04916faee5a1437     0        1500000 lovelace + TxOutDatumInline ReferenceTxInsScriptsInlineDatumsInBabbageEra (HashableScriptData "\216y\159\216y\159ECLOSE\255\216y\159Ipresident\255\216y\159IpresidentEraoulE12236\255\255" (ScriptDataConstructor 0 [ScriptDataConstructor 0 [ScriptDataBytes "CLOSE"],ScriptDataConstructor 0 [ScriptDataBytes "president"],ScriptDataConstructor 0 [ScriptDataBytes "president",ScriptDataBytes "raoul",ScriptDataBytes "12236"]]))
+
+-- je construit mon datum :
+
+datumOPen = TontineDatum (OperationType "OPEN") (Transactor "president") (Member "president" "raoul" "12236")
+
+commentaire : "raoul" est parmi les membres de la reunion. si on met un nom qui n'est pas dans la liste des membres ca ne marchera pas.
+	      "preseident" est un identifiant, on pouvait mettre autre chose
+	      
+-- on appelle la fonction savaDataToFile avec notre datumOpen, pour mettre ca sous forme de json : 
+
+savaDataToFile "/home/nkalla/Documents/testData/datumOpen.json" datumOPen
+
+resultat de savaDataToFile : 
+
+{
+    "constructor": 0,
+    "fields": [
+        {
+            "constructor": 0,
+            "fields": [
+                {
+                    "bytes": "4f50454e"
+                }
+            ]
+        },
+        {
+            "constructor": 0,
+            "fields": [
+                {
+                    "bytes": "707265736964656e74"
+                }
+            ]
+        },
+        {
+            "constructor": 0,
+            "fields": [
+                {
+                    "bytes": "707265736964656e74"
+                },
+                {
+                    "bytes": "72616f756c"
+                },
+                {
+                    "bytes": "3132323336"
+                }
+            ]
+        }
+    ]
+}
+
+2 - notre datum etant deja crée, on construit la tx pour ouvrir la tontine : 
+
+cardano-cli transaction build --tx-in e30fbb11283895de8422e7b938289077b84d839c7356b49bb04916faee5a1437#1 --tx-out $(cat /home/nkalla/tontineAddr)+1500000  --tx-out-inline-datum-file /home/nkalla/Documents/testData/datumOpen.json --change-address $(cat /home/nkalla/monWallet/raoul.addr) --testnet-magic 1 --out-file openTontine-unsigned
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+--------------------------- c'est un ECHEC, je refais un autre ParamsData ---------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+newParams = ParamsData 100000000 ["91dbe3d70568b1ada2b0f059a8394dffb8fa632214c42c66f87fde95", "2fd3140fe8c8c05556b041cbab2132b7b0070ef603b9098368609d8a"] ["91dbe3d70568b1ada2b0f059a8394dffb8fa632214c42c66f87fde95", "2fd3140fe8c8c05556b041cbab2132b7b0070ef603b9098368609d8a"] ["raoul", "wimpro"]
+
+ce qui me donne une nouvelle addresse du script : 
+addr_test1wpwgwjpne75jk3w9pd9d042kdy0923nxs33jfs0l3esmeusfvwx86
+
+il y a aucun utxo dans cette addresse, je vais refaire tout a zero.
+
+1 - je decide d'ouvrir directement la tontine sans la fermer au prealable : 
+
+cardano-cli transaction build --tx-in ce60a7fc7b4a086d31808b251823a2e25f399ddfee70ba474c581d4c8762d10b#1 --tx-out $(cat /home/nkalla/tontineAddr2)+1500000  --tx-out-inline-datum-file /home/nkalla/Documents/testData/datumOpen.json --change-address $(cat /home/nkalla/monWallet/raoul.addr) --testnet-magic 1 --out-file openTontine2-unsigned
+
+2 - resultat :
+
+cardano-cli query utxo --testnet-magic 1 --address $(cat /home/nkalla/tontineAddr2)
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+f78482f3921aadbae195581048574292d266d9487c6e9bbb6a4f682af468f345     0        1500000 lovelace + TxOutDatumInline ReferenceTxInsScriptsInlineDatumsInBabbageEra (HashableScriptData "\216y\159\216y\159DOPEN\255\216y\159Ipresident\255\216y\159IpresidentEraoulE12236\255\255" (ScriptDataConstructor 0 [ScriptDataConstructor 0 [ScriptDataBytes "OPEN"],ScriptDataConstructor 0 [ScriptDataBytes "president"],ScriptDataConstructor 0 [ScriptDataBytes "president",ScriptDataBytes "raoul",ScriptDataBytes "12236"]]))
+
+
+3 - maintenant je vais essayer de tontiner 
+
+mon redeemer : tontineRedeemer2 = RedeemerData (OperationType "TONTINE") "raoul"
+
+mon datum  : datumOPen = TontineDatum (OperationType "OPEN") (Transactor "president") (Member "president" "raoul" "12236")
+
+ma tx : 
+
+cardano-cli transaction build --tx-in f78482f3921aadbae195581048574292d266d9487c6e9bbb6a4f682af468f345#1 --tx-in f78482f3921aadbae195581048574292d266d9487c6e9bbb6a4f682af468f345#0 --tx-in-inline-datum-present --tx-in-script-file /home/nkalla/Documents/tontine.plutus --tx-in-redeemer-file /home/nkalla/Documents/testData/tontineRedeemer2.json --tx-in-collateral f78482f3921aadbae195581048574292d266d9487c6e9bbb6a4f682af468f345#1  --tx-out $(cat /home/nkalla/tontineAddr2)+1500000 --tx-out-inline-datum-file /home/nkalla/Documents/testData/datumOpen.json --tx-out $(cat /home/nkalla/tontineAddr2)+100000000 --change-address $(cat /home/nkalla/monWallet/raoul.addr) --testnet-magic 1 --out-file tontine-unsigned
+
+resultat : Estimated transaction fee: Lovelace 411087
+
+-- je signe la tx : cardano-cli transaction sign --tx-body-file tontine-unsigned --signing-key-file  /home/nkalla/monWallet/privateKey.skey --testnet-magic 1 --out-file tontine-signed
+
+-- je soumets : cardano-cli transaction submit --tx-file tontine-signed --testnet-magic 1
+
+
+
+4 - apres tout ceci je fais le query de l'addresse de mon script : 
+
+cardano-cli query utxo --testnet-magic 1 --address $(cat /home/nkalla/tontineAddr2)
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+6947460d1c6d49e233dea448aad39e43e5d31fe8b59c8a0c31bd2e25285f7b21     0        1500000 lovelace + TxOutDatumInline ReferenceTxInsScriptsInlineDatumsInBabbageEra (HashableScriptData "\216y\159\216y\159DOPEN\255\216y\159Ipresident\255\216y\159IpresidentEraoulE12236\255\255" (ScriptDataConstructor 0 [ScriptDataConstructor 0 [ScriptDataBytes "OPEN"],ScriptDataConstructor 0 [ScriptDataBytes "president"],ScriptDataConstructor 0 [ScriptDataBytes "president",ScriptDataBytes "raoul",ScriptDataBytes "12236"]]))
+6947460d1c6d49e233dea448aad39e43e5d31fe8b59c8a0c31bd2e25285f7b21     1        100000000 lovelace + TxOutDatumNone
+
+--commentaires : 
+- j'ai effectué une tontine, sans datum , mais j'aurais pu mettre un datum pour indiquer par exemple la personne qui a effectuer 
+la tx et pour quel membre.
+
+
+5 - je vais essayer de fermer la tontine 
+
+cardano-cli transaction build --tx-in d1c6eaf1df44fd075f2dcfaf47e62a2f7bc146aa658ef0e11da333c98b15d60b#1 --tx-in d1c6eaf1df44fd075f2dcfaf47e62a2f7bc146aa658ef0e11da333c98b15d60b#0 --tx-in-inline-datum-present --tx-in-script-file /home/nkalla/Documents/tontine.plutus --tx-in-redeemer-file /home/nkalla/Documents/testData/closeRedeemer3.json --tx-in-collateral d1c6eaf1df44fd075f2dcfaf47e62a2f7bc146aa658ef0e11da333c98b15d60b#1  --tx-out $(cat /home/nkalla/tontineAddr2)+1500000 --tx-out-inline-datum-file /home/nkalla/Documents/testData/datumRaoulClose.json  --change-address $(cat /home/nkalla/monWallet/raoul.addr) --testnet-magic 1 --out-file closeTontine-unsigned
+
+
+je n'arrive pas a fermer la tontine.
+
+RMQ : quelqu'un peut faire une tx vers le script avec un datum OPEN, et debloquer les fonds meme si il y a deja un utxo  avec un datum CLOSE. il met juste le utxo avec le datum OPEN en entree a la tx et ca passe ?????
+
+solution : il faut ajouter l'option required-signer-hash + (le hash de l'addresse de celui qui va signer la tx)
+il faut comprendre que le tx se construit en local, et donc doit avoir tous les elements necessaires pour la validation avant de pousser la tx sur le reseau voici la bonne commande : 
+
+cardano-cli transaction build --tx-in d1c6eaf1df44fd075f2dcfaf47e62a2f7bc146aa658ef0e11da333c98b15d60b#1 --tx-in d1c6eaf1df44fd075f2dcfaf47e62a2f7bc146aa658ef0e11da333c98b15d60b#0 --tx-in-inline-datum-present --tx-in-script-file /home/nkalla/Documents/tontine.plutus --tx-in-redeemer-file /home/nkalla/Documents/testData/closeRedeemer3.json --required-signer-hash 91dbe3d70568b1ada2b0f059a8394dffb8fa632214c42c66f87fde95 --tx-in-collateral d1c6eaf1df44fd075f2dcfaf47e62a2f7bc146aa658ef0e11da333c98b15d60b#1  --tx-out $(cat /home/nkalla/tontineAddr2)+1500000 --tx-out-inline-datum-file /home/nkalla/Documents/testData/datumRaoulClose.json  --change-address $(cat /home/nkalla/monWallet/raoul.addr) --testnet-magic 1 --out-file closeTontine-unsigned
+
+
+
+resultat : ca passe tres bien. faisons un query de l'addresse du script pour voir : 
+
+cardano-cli query utxo --testnet-magic 1 --address $(cat /home/nkalla/tontineAddr2)
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+6947460d1c6d49e233dea448aad39e43e5d31fe8b59c8a0c31bd2e25285f7b21     0        1500000 lovelace + TxOutDatumInline ReferenceTxInsScriptsInlineDatumsInBabbageEra (HashableScriptData "\216y\159\216y\159DOPEN\255\216y\159Ipresident\255\216y\159IpresidentEraoulE12236\255\255" (ScriptDataConstructor 0 [ScriptDataConstructor 0 [ScriptDataBytes "OPEN"],ScriptDataConstructor 0 [ScriptDataBytes "president"],ScriptDataConstructor 0 [ScriptDataBytes "president",ScriptDataBytes "raoul",ScriptDataBytes "12236"]]))
+6947460d1c6d49e233dea448aad39e43e5d31fe8b59c8a0c31bd2e25285f7b21     1        100000000 lovelace + TxOutDatumNone
+fe6d122db7cdc2489e2f68ce1187466003e023d4ab5a177a41df46f9f4c227b4     0        1500000 lovelace + TxOutDatumInline ReferenceTxInsScriptsInlineDatumsInBabbageEra (HashableScriptData "\216y\159\216y\159ECLOSE\255\216y\159Eraoul\255\216y\159IpresidentEraoulE12236\255\255" (ScriptDataConstructor 0 [ScriptDataConstructor 0 [ScriptDataBytes "CLOSE"],ScriptDataConstructor 0 [ScriptDataBytes "raoul"],ScriptDataConstructor 0 [ScriptDataBytes "president",ScriptDataBytes "raoul",ScriptDataBytes "12236"]]))
+
+
+6 - essayons de payer : j'effectue le paiement en utilisant le utxo qui vaut 100000000 du script pour mon address : raoul.addr
+
+
+cardano-cli transaction build --tx-in fe6d122db7cdc2489e2f68ce1187466003e023d4ab5a177a41df46f9f4c227b4#1 --tx-in 6947460d1c6d49e233dea448aad39e43e5d31fe8b59c8a0c31bd2e25285f7b21#1 --tx-in-script-file /home/nkalla/Documents/tontine.plutus --tx-in-datum-file /home/nkalla/Documents/testData/datumPay.json --tx-in-redeemer-file /home/nkalla/Documents/testData/payRedeemer.json --tx-in-collateral fe6d122db7cdc2489e2f68ce1187466003e023d4ab5a177a41df46f9f4c227b4#1 --tx-out $(cat /home/nkalla/monWallet/raoul.addr)+100000000  --testnet-magic 1 --out-file paiement-unsigned --change-address $(cat /home/nkalla/monWallet/raoul.addr)
+
+
+--resultat : 
+
+Command failed: transaction build  Error: The following scripts have execution failures:
+the script for transaction input 0 (in the order of the TxIds) failed with: 
+The Plutus script witness for the txin does not have a script datum (according to the UTxO). The txin in question is 6947460d1c6d49e233dea448aad39e43e5d31fe8b59c8a0c31bd2e25285f7b21#1
+
+
+--commentaires : selon la logique de la tontine, en tontinant il faut mettre un datum en sortie de la dite tx.
+--rmq : le validateur est une fonction dont ses parametres sont les elements utilises quand on fait un cardano-cli, il voit les --tx-in , les datum, les redeemers et les --tx-out.
+
+
+7 - je vais essayer de tontiner normalement 
+
+
+cardano-cli transaction build --tx-in 7a6ef405e0c0b44160bf70854174c1397172ced50601a6284a50f0baaeeeefab#1 --tx-in 7a6ef405e0c0b44160bf70854174c1397172ced50601a6284a50f0baaeeeefab#0  --tx-in-inline-datum-present --tx-in-script-file /home/nkalla/Documents/tontine.plutus --tx-in-redeemer-file /home/nkalla/Documents/testData/tontineRedeemer2.json  --tx-in-collateral 7a6ef405e0c0b44160bf70854174c1397172ced50601a6284a50f0baaeeeefab#1  --tx-out $(cat /home/nkalla/tontineAddr2)+1500000 --tx-out-inline-datum-file /home/nkalla/Documents/testData/datumOpen.json --tx-out $(cat /home/nkalla/tontineAddr2)+100000000 --tx-out-inline-datum-file /home/nkalla/Documents/testData/datumClose.json  --change-address $(cat /home/nkalla/monWallet/raoul.addr) --testnet-magic 1 --out-file newTontine-unsigned 
+
+
+commentaires : quand je tontine je consomme le utxo du script qui a le datum OPEN, donc je devrais avoir a la sortie de ma tx : 
+un utxo+datum(OPEN) pour maintenir la tontine ouverte et ainsi permettre a une autre personne de cotiser et un utxo+datum(CLOSE) car selon la logique du script, un utxo n'est consommé au moment du paiement que si il a le datum CLOSE.
+
+
+8 - je vais essayer de payer a mon addresse le uxto de 100000000 que j'ai tontiné.
+
+
+cardano-cli transaction build --tx-in f311cd762b418d6c38690f25802af421357e4c1390fe56c5d082250a1c0e2a84#2 --tx-in f311cd762b418d6c38690f25802af421357e4c1390fe56c5d082250a1c0e2a84#1 --tx-in-inline-datum-present --tx-in-script-file /home/nkalla/Documents/tontine.plutus --tx-in-redeemer-file /home/nkalla/Documents/testData/payRedeemer.json --required-signer-hash 91dbe3d70568b1ada2b0f059a8394dffb8fa632214c42c66f87fde95 --tx-in-collateral f311cd762b418d6c38690f25802af421357e4c1390fe56c5d082250a1c0e2a84#2 --tx-out $(cat /home/nkalla/monWallet/raoul.addr)+100000000 --change-address $(cat /home/nkalla/tontineAddr2) --testnet-magic 1 --out-file pay-unsigned
+
+resultat : Estimated transaction fee: Lovelace 402221
+
+-- commentaires : aussi pour le payement , il faut preciser le --required-signer-hash. ca aide a verifier si la personne qui fait la tx est parmi les gens autorisés a le faire. 
+
+
+-- apres avoir signé et soumis la tx, faisons le query de mon addresse pour voir le resultat 
+je met un utxo de mon address en entree pour supporter le collateral, et je dois preciser que le reste lui revient. mais j'ai fait une boulette et j'ai dit que je reste va a mon script et voici le resultat : 
+
+cardano-cli query utxo --testnet-magic 1 --address $(cat /home/nkalla/tontineAddr2)
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+049e0c9629ce921d8196a24ab5ee833ba9d1ee612c981b6b25dbea61c65efbcc     1        9630865645 lovelace + TxOutDatumNone
+2ec1bf6b60eb32f1522ede3fa106df5c7bd58428de86d6995af9bf42fc0c1608     1        100000000 lovelace + TxOutDatumNone
+6947460d1c6d49e233dea448aad39e43e5d31fe8b59c8a0c31bd2e25285f7b21     1        100000000 lovelace + TxOutDatumNone
+f311cd762b418d6c38690f25802af421357e4c1390fe56c5d082250a1c0e2a84     0        1500000 lovelace + TxOutDatumInline ReferenceTxInsScriptsInlineDatumsInBabbageEra (HashableScriptData "\216y\159\216y\159DOPEN\255\216y\159Ipresident\255\216y\159IpresidentEraoulE12236\255\255" (ScriptDataConstructor 0 [ScriptDataConstructor 0 [ScriptDataBytes "OPEN"],ScriptDataConstructor 0 [ScriptDataBytes "president"],ScriptDataConstructor 0 [ScriptDataBytes "president",ScriptDataBytes "raoul",ScriptDataBytes "12236"]]))
+fe6d122db7cdc2489e2f68ce1187466003e023d4ab5a177a41df46f9f4c227b4     0        1500000 lovelace + TxOutDatumInline ReferenceTxInsScriptsInlineDatumsInBabbageEra (HashableScriptData "\216y\159\216y\159ECLOSE\255\216y\159Eraoul\255\216y\159IpresidentEraoulE12236\255\255" (ScriptDataConstructor 0 [ScriptDataConstructor 0 [ScriptDataBytes "CLOSE"],ScriptDataConstructor 0 [ScriptDataBytes "raoul"],ScriptDataConstructor 0 [ScriptDataBytes "president",ScriptDataBytes "raoul",ScriptDataBytes "12236"]]))
+
+
+commentaires : voila un utxo de 9000tAda que j'ai perdu, il est dans mon script sans datum, et selon la logique de la tontine, on utilise un utxo dans le paiement que si il a un datum CLOSE
+
+
+cardano-cli query utxo --testnet-magic 1 --address $(cat /home/nkalla/monWallet/raoul.addr)
+                           TxHash                                 TxIx        Amount
+--------------------------------------------------------------------------------------
+049e0c9629ce921d8196a24ab5ee833ba9d1ee612c981b6b25dbea61c65efbcc     0        100000000 lovelace + TxOutDatumNone
+
+commentaires : voila mon addresse qui a seulement le utxo de 100000000 que j'ai payé depuis le script.
+
+
+
+
+------------== appunti Week05 : minting policy at NFT ===-----------------------------
+
+obietivi da raggiungere :     -> Obietivo Raggiunto
+
+ - c'est quoi un minting policy
+ - c'est quoi un NFT
+ - difference entre minting policy et NFT
+ - difference netre une tx de minting et une tx normale sur cardano
+ 
+le minting policy c'est une fonction (une sorte de validateur) qui te permet de creer un token, la tx de minting ne prend pas de datum a la difference d'une tx normal entre deux wallets.
+
+apres avoir fait le homework1 et le homework2 voici mes donnees utilisees 
+
+pour obtenir le posixTime j'ai utilise la fonction getPosixTime de la libraire Data.Time.Clock.POSIX et dans le code il faut import Plutus.V1.Ledger.Time pour construire l'element de type POSIXTime qu'on enverra a la fonction de serialisation.
+
+j'ai appelé ma fonction de serialisation  du homework1 parametré avec le pubKeyhash et le posixTime comme suit : 
+
+saveHomework1Policy "91dbe3d70568b1ada2b0f059a8394dffb8fa632214c42c66f87fde95" (POSIXTime 1692373818851207511)
+
+j'ai appelé ma fonction de serialisation du homework2 parametré avec le txOutRef et le tokenName comme suit : 
+
+saveHomework2Policy ( TxOutRef "049e0c9629ce921d8196a24ab5ee833ba9d1ee612c981b6b25dbea61c65efbcc" 0) "raoul"
+
+
+------------------------------------------====-----------------------------------------------
+
+j'ai redeployé mon script de minting du homework1Week05 avec des nouvelles donnees : 
+le hash de mon nami et un posixtime. 
+
+saveHomework1Policy "2bf3b747ec2983fe13b1f6844501f8447279360e38467e14b59f0eeb" (POSIXTime 1692454310)
+
+remarque1 : ici je deploie le script avec des parametres qui sont : le pubKeyhash de l'addresse du wallet et un posixtime. Mais dans le week06 on nous montre qui'il est possible de deployer un script parametré SANS PARAMETRES, et c'est dans le offchain code que les parametres sont envoyés au script avec la fonction applyParamsToScript de la librairie Lucid.
+
+en deployant le script avec les parametres deja, le offchain code se fait simplement. il faut ajouter addSigner en construisant la tx. 
+
+remarque2 : j'ai deployé le script du homework1 du week05 sans les parametres en  faisant comme  dans la video de lars.
+dans le offchain-code, je dois passer le pukeyhash et un deadline a la fonction applyParamsToScript pour generer mon script de minting.
+
+
+
+
+
+
+#-------------------------------= Week06 : testing smart-contract ------------------------#
+
+le deadline : un d est vu comme la borne superieure d'un interval c'est a dire que ]<-, d]
+before deadline : concerne toutes les valeurs de d appartenant à ]d, ->[
+after deadline : concerne toutes les valeurs de d appartenant à ]<- , d[ : je doutes fort que un deadline negatif ait un sens.
+
+la notion de before et after sont vues et definies en fonction du deadline.
+si je passe un temps x en parametre a ma fonction : 
+	before le deadline voudrait dire que le deadline est avant x ( deadline < x)
+	after le deadline voudrait dire que le deadline est apres x ( deadline > x )
+les fonctions de Plutus.Interval sont ecrites tenant compte de la logique où tout es vu en fonction du deadline.
+
+
+#--------------------------------homework Week06 : test apres coding du normalSpending -----------------#
+
+j'ai genéré l'addresse du script a tester : addr_test1wpapyc0muneylsr036jz5y7uf5x25ycl4j5vhvauv2nhqksuu88sr
+apres le query il n'y a pas de utxo dedans, cela voudrait dire que le testing ne change pas le contenu de l'addresse du script c'est pour cela que la librairie Plutus.Simple.Module utilise la monade d'etat State.
+
+
+#------------------------------  Week08 : private testnet -------------------#
+
+
+nb : le week7 parle de marlowe j'ai sauté ca pour passer au week08
+
+
+- a quoi va servir le private testnet ?? quel est l'advantage d'avoir un testnet privé ?? 
+- a quoi sert le withdrawl quand je construis une tx avec le cardano-cli ?
+- a quelle tx est il necessaire d'attacher le protocole parameters ?
+- pour quel type de tx doit on fournir le protocol parameter ?
+- c'est quoi le protocol parameter ?
+
+le stake validator est comme le minting script, ca ne prend pas le datum 
+
+dans le scriptPurpose, le spending sert a debloquer un utxo assit sur un script 
+
+le minting est utile lorsqu'on minte ou burn un token 
+
+le staking sur cardano depend de la notion d'epoques, les epoques se produisent apres chaque 5 jours, c'est trop long lorsqu'on est en plein developpement on a besoin de l'instantané, de la rapidité. l'alternative a cela est creé un private testnet.
+quand tu veux simuler le staking tu as besoin de mettre sur pieds un testnet privé pour t'epargner d'attendre durant 5 jours.
+
+withdraw = retrait 
+reward   = recommpense
+
+la notion de KES Key pour le staking sur cardano. le KES Key est un couple (operateur, cle) qui est utilise pour valider les neouds. la cle est generé apres une periode determinée.
+
+rmq : a chaque fois que tu redemarre le private testnet, les parametres sont reinitialises comme la valeur en lovelace contenue dans les addresses utilisés pour les exemples. surement il y a un script qui se lance au demarrage du private testnet
+
+
+
+
+
+###############------------------------ Appunti su Git --------------------------##############
+
+pour creer un nouveau depot git, il faut taper la commande git init, en etant dans le repertoire ou on veut que le depot se
+
+trouve.
+
+
+############----------------------- Appunti Monad Transformers -----------##########
+
+- quand on a deja deux effet monadiques dans une fonction, il faut deja pensé au monad transformer
+- les monad tranformers n'existent que pour les monades qui existent deja ! chaque monad qu'on a vu a son equivalent tranformer.
+
+
+
+
+------------------ remarques sur recherches des solutions de postgresql --------------------
+
+- quand on est deja connecté avec un utilisateur (postgres#) les commandes finissent par ;
+- la commande pour se connecter avec un autre utilisateur que le postgres par defaut
+	sudo -u user-name psql db-name
+	
+- la connection avec pgadmin : base de donnees de maintenance j'ai laissé a postgres 
+ l'utilisateur : j'ai mis nkalla, un utilisateur que j'ai creé avec le cli
+ 
+ - creer un utilisateur   : createuser --interactive --pwprompt
+ 
+ 
+ - parle de beaucoup de loi
+ - loi est elle egale a la logigue d'un algorithme ?
+ - esposé trop axé sur les maths 
+ - instance de classe implemente les semigroupes ?? -> explication ?
+ 
+ - les champs de requettes sont en minuscules
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
  
 
