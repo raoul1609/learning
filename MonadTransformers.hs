@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use camelCase" #-}
 import Control.Monad 
 import Control.Monad.Trans.Maybe 
 import Control.Monad.Trans.Class 
@@ -6,6 +8,8 @@ import Control.Monad.Trans
 import Control.Monad.Trans.Reader
 import Control.Monad.Trans.Writer.Strict
 import qualified Control.Monad.Reader as MR
+import Control.Monad.Identity (Identity(runIdentity))
+import Data.Time.Clock.POSIX
 
 
 
@@ -36,13 +40,9 @@ getPassword'  = do
 
 {-- monads transformers exercices --}
 
--- ## Exercice1
+--                                   ## Exercice1
 
--- 1
-
-
-
-
+-- #1
 
 data ProtectedData a = ProtectedData String a
 
@@ -52,13 +52,6 @@ accessData s (ProtectedData pass v) =
 
 
 type Protected s a = MaybeT (Reader (ProtectedData s)) a
-
--- instance Monad (Protected s) where 
---   return :: a -> Protected s a 
---   return x = 
---     MaybeT $ do f 
---     where f :: ProtectedData s -> a 
---           f (ProtectedData str y) = undefined 
     
 
 run :: ProtectedData s -> Protected s a -> Maybe a
@@ -66,26 +59,112 @@ run protectedData protected = do
   let performedMaybe = runMaybeT protected
   runReader performedMaybe protectedData
    
--- Protected a a = MaybeT (Reader (ProtectedData a)) a
--- newtype MaybeT m a = MaybeT { runMaybeT :: m (Maybe a) }
-
--- definir le bind et le return : TAF
--- property test des lois sur les monades
 
 access :: String -> Protected a a
 access inputPassword = do 
-  -- acceder au pass contenu dans le reader et comparer avec le pass d'entree
   getProtectedData <- lift ask  
   MaybeT $ do 
     return $ accessData inputPassword getProtectedData
-    
-    -- return $ f getProtectedData
 
 
-    --   where f :: ProtectedData a -> Maybe a 
-    --         f (ProtectedData str y) = accessData inputPassword (ProtectedData str y)
+
+-- #2 
+
+type Protected' s a = MaybeT (ReaderT (ProtectedData s) IO) a
 
 
-  -- let checkAccess = accessData inputPassword getProtectedData
-  -- return checkAccess
-  --undefined 
+run' :: ProtectedData s -> Protected' s a -> IO (Maybe a)
+run' var1 var2 = do 
+  let performedMaybeT = runMaybeT var2
+  runReaderT performedMaybeT var1
+   
+
+access' :: Protected' a a
+access' = do
+  getDataProtected <- lift ask 
+  getThePassword <- liftIO getLine 
+  -- l'ecriture ci-dessus est le raccourcis de celle-ci : getThePassword <- lift $ lift  getLine
+  MaybeT $ do 
+    return $ accessData getThePassword getDataProtected
+
+
+
+--                                       ## Exercice 2
+
+data Item = Msg String | Section String [Item]
+  deriving (Show,Eq)
+
+type Log = [Item]
+
+type Logging a = Writer Log a  -- ceci correspond a : Writer Log a = WriterT Log Identity a 
+
+-- type Writer w = WriterT w Identity
+-- newtype WriterT w (m :: Type -> Type) a = WriterT (m (a, w))
+
+
+
+--1 
+
+-- ‘log s‘ logs the messages ‘s‘
+log :: Show t => t -> Logging ()       -- Logging () = Writer Log () = WriterT Log Identity ()
+log x = WriterT $ do 
+  return ((), [Msg $ show x])  
+
+
+-- ‘with_section s m‘ executes m and add its log in a section titled ‘s‘
+with_section :: String -> Logging a -> Logging a
+with_section str logging = do
+  (something, log) <- lift $ runWriterT logging 
+  WriterT $ return (something, map (f str) log)
+    where f :: String -> Item -> Item
+          f inputStr (Msg msg) = Msg $ mappend inputStr msg 
+          f inputStr (Section var items) = Section (mappend inputStr var) items
+
+
+runLogging :: Logging a -> (a, Log)
+runLogging  logging = do -- suis dans le contexte de la monade Identity
+  let x = runWriterT logging
+  runIdentity x 
+
+
+--2
+
+
+-- Extend the Logging monad to be able to call IO actions
+
+type ExtendedLogging a = WriterT Log IO a 
+
+-- non on n'a pas besoin de changer le type runLogging
+runLoggingChanged :: ExtendedLogging a -> (a, Log)
+runLoggingChanged = undefined 
+
+-- Extend Item, log and with_section to always register timestamps
+
+data ExtendedItem = MsgAndTime (String, POSIXTime) | SectionAndTime (String, POSIXTime) [Item]
+  deriving (Show,Eq)
+
+
+
+extendedLog :: Show t => t -> ExtendedLogging ()
+extendedLog var = WriterT $ do 
+  return ((), [Msg $ show var])
+
+-- In the case of with_section, you should register two timestamps: one before and one after
+
+-- chaque message est enregistré a un temps donné : (String, POSIXTime)
+-- le message de sortie de extendWith_action est associé au temps courant 
+
+type ExtendedLog = [ExtendedItem]
+
+type ExtendedLogging' a = WriterT ExtendedLog IO a
+
+extendedWith_section :: (String, POSIXTime) -> ExtendedLogging' a -> ExtendedLogging' a
+extendedWith_section inputMsgWithTime extendedLogging = do 
+  (something, somelog) <- liftIO $ runWriterT extendedLogging 
+  getTheTime <- liftIO getPOSIXTime
+  WriterT $ do 
+    return (something, map (g inputMsgWithTime getTheTime) somelog)
+
+      where g :: (String, POSIXTime) -> POSIXTime -> ExtendedItem -> ExtendedItem
+            g (str, _) time (MsgAndTime (msg,_)) = MsgAndTime (mappend str msg, time) 
+            g (str, _) time (SectionAndTime (msg, _) items) = SectionAndTime (mappend str msg, time) items
