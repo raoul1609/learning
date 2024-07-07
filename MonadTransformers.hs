@@ -168,3 +168,4 @@ extendedWith_section inputMsgWithTime extendedLogging = do
       where g :: (String, POSIXTime) -> POSIXTime -> ExtendedItem -> ExtendedItem
             g (str, _) time (MsgAndTime (msg,_)) = MsgAndTime (mappend str msg, time) 
             g (str, _) time (SectionAndTime (msg, _) items) = SectionAndTime (mappend str msg, time) items
+
