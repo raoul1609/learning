@@ -1,0 +1,119 @@
+version: '1'
+
+#les differentes rubriques d'un fichier compose.yml : version, services, reseaux, volumes et variable d'environnement
+
+networks:
+  projet_laboratoire:
+    driver: bridge
+
+
+volumes:
+  efa_volume_db:
+    driver: local
+  iam_volume_db:
+    driver: local
+  laboRapport_volume_db:
+    driver: local
+  laboNotification_volume_db:
+    driver: local
+
+services:
+  efa:
+    image: efa      # image docker utilisée pour ce service  
+    ports:
+      '7001:8081'   # mappage de ports
+    hostname: efa   # similaire a contenair_name ?
+    working_dir: /opt/efa
+    network:
+      - projet_laboratoire
+    depends_on:
+      efa_db:
+        condition: service_healthy
+
+
+  efa_db:
+    image: efa_db
+    hostname: efa_db
+    ports:
+      - '3001:3306'
+    volumes:        # mappage de volumes
+      - efa_volume_db:/var/lib/mysql/data
+    networks:
+      - projet_laboratoire
+    environment:
+      -  MYSQL_PWD=Ange2310!!
+
+    
+  iam:
+    image: iam
+    ports:
+      '7002:8080'
+    hostname: iam
+    working_dir: /opt/iam
+    networks:
+      - projet_laboratoire
+    depends_on:
+      iam_db:
+        condition: service_healthy
+
+
+  iam_db:
+    image: iam_db 
+    ports:
+      -3002:3306
+    hostname: iam_db
+    volumes:
+      - iam_volume_db:/var/lib/mysql/data
+    networks:
+      - projet_laboratoire
+    environment:
+      -  MYSQL_PWD=Ange2310!!
+
+
+
+  laboRapport:
+    image: laboRapport
+    ports:
+      '7003:8082'
+    hostname: laboRapport
+    working_dir: /opt/laboRapport
+    networks:
+      - projet_laboratoire
+    depends_on:
+      laboRapport_db:
+        condition: service_healthy
+
+
+  laboRapport_db:
+    image: laborapport_db
+    ports:
+      - 3003:3306
+    volumes:
+      - laboRapport_volume_db:/var/lib/mysql/data
+    networks:
+      - projet_laboratoire
+    environment:
+      -  MYSQL_PWD=Ange2310!!
+    
+
+  laboNotification:
+    image: laboNotification 
+    ports:
+      '7003:8082'
+    hostname: laboNotification
+    working_dir: /opt/laboNotification
+    networks:
+      - projet_laboratoire
+
+
+  laboNotification_db:
+    image: labonotification_db
+    ports:
+      -3004:3306
+    volumes:
+      - laboNotification_volume_db:/var/lib/mysql/data
+    networks:
+      - projet_laboratoire
+    environment:
+      -  MYSQL_PWD=Ange2310!!
+
