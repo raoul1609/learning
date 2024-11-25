@@ -31,4 +31,30 @@ le pass peut aussi etre utilisé comme le undefined dans haskell, lorsqu'on est 
 - dans une instruction il y a le cas terminal : le _ qui agit comme le otherwise de haskell
 NB: l'intruction match est similaire au pattern matching dans haskell
 
+- samedi 26/10/2024 reprise de la lecture de la doc de python : les fonctions
+
+on peut transmettre les elements a une fonction de trois facons differentes : 
+    - par position seule (dans ce cas l'ordre importe), exp : def pos_only_arg(arg, /):
+    - par position ou nommé, exp : def standard_arg(arg):
+    - seulement nommé, exp : def kwd_only_arg(*, arg):
+    
+- si il y a un / dans la definition d'une fonction alors les parametres positionnels uniquement sont placés avant le / 
+ Dans le cas contraire il y a pas de parametres positionnels uniquement seuls dans la definition de la fonction
+    les parametres qui suivent le / peuvent etre positionels ou nommés ou bien nommés uniquement
+
+- les parametres nommés uniquement sont placés apres le *
+- exemple combiné : def combined_example(pos_only, /, standard, *, kwd_only):
+
+on peut definir une fonction en precisant qu'elle va prendre un nombre arbritraire d'arguments, en mettant un * devant
+nom representant les arguments.
+Avant le nombre variable d’arguments, zéro ou plus arguments normaux peuvent apparaître.
+
+exp : def maFonction (*ArgumentsArbitraires)
+    - Tout paramètre placé après le paramètre *arg ne pourra ê tre utilisé que comme argument nommé , pas
+comme argument positionnel.
+
+- reprise avec la lecture de la doc de python
+je dois relire les modules, regarder les videos sur les modules en python
+
+-> lecture du chapitre 9 de la doc de python, je me suis arrete au point 9.3.4
 """
