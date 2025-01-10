@@ -1,3 +1,25 @@
+from django.contrib import admin
+from django.urls import path, include
+from django.http import HttpResponse
+
+# fonction ecrite pour specifier la ressource accesible a localhost:8000/
+# j'ai decide de la mettre ici
+
+def racinePlateforme (request): 
+    return HttpResponse("Bienvenu a la racine de notre plateforme, specifier la ressource voulue apres le /")
+
+
+urlpatterns = [
+    path ('', racinePlateforme),
+    path('admin/', admin.site.urls),
+    path('firstApp/', include ('first_app.urls')),
+    path('polls/', include('polls.urls')),
+]
+
+
+
+
+
 """
 URL configuration for django_with_jason project.
 
@@ -14,11 +36,3 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('firstApp/', include ('first_app.urls')),
-    path('polls/', include('polls.urls')),
-]
