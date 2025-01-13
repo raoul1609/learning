@@ -1,0 +1,18 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title> Person's details </title>
+    <link rel="stylesheet" href="{% static 'polls/css/main.css' %}">
+</head>
+
+<body>
+    <h1>Cette permet d'afficher les informations sur une personne individuellement </h1>
+    <p>Ceci est la page de : {{onePerson.name|upper }} </p>
+    <p>Telephone : {{onePerson.tel}} </p>
+    <p>Age : {{onePerson.age}}</p>
+</body>
+
+</html>
