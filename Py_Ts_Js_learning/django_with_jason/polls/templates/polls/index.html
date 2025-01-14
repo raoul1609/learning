@@ -11,6 +11,22 @@
 <body>
     <h1>Bienvenu dans le premier template avec django </h1>
     <p>{{ message }}</p>
+
+    {%comment 'pour faire un commentaire dans les templates django'%}
+        <p>something that will be ignore by the browser </p>
+    {% endcomment%}
+
+    {% now "Y-m-d H:i" %}
+
+    {% lorem 4 p %}
+
+    {% comment 'inclure le code de django_doc.html dans index.html' %}
+    {% include "./django_doc.html" %}
+    {% endcomment %}
+
+    <p><a href = "{% url 'firstAppIndex' %}"> ceci est un lien vers le fichier djangoDocHtml</p>
+    
+
 </body>
 
 </html>

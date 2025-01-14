@@ -1,0 +1,8 @@
+recuperer les donnees dans la bd et les affcihers dans le navigateur --> ok
+comment inserer les donnees dans la bd via le code django ?
+comment modifier les donnees a partir du code django ?
+
+je ne parviens pas a finir le tuto de jason champagne, la video qui parle des modeles de donnees
+
+NB : pour faire les liens c'est mieux d'utiliser les noms utilises dans le fichier url.py, en etant dans le template index de polls, 
+    j'ai appele le chemin dans un first_app en saisant son nom (firstAppIndex)

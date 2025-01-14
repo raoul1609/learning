@@ -12,11 +12,11 @@
     <h1>Bienvenu dans le premier template avec django </h1>
     <p> Test recuperer les donnees dans une table de la bd </p>
     <ul>
-        {% for person in persons  %}
-        
+        {% for person in persons  %}   
         <li>{{ person.name}}</li>
         {% endfor %}
     </ul>
+    {% lorem 4 p %}
 </body>
 
 </html>

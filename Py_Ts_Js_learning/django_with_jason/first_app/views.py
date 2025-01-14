@@ -18,5 +18,5 @@ def allInfos (request):
 
 
 def showOnePerson (request, person_id):
-    context = {"onePerson": get_object_or_404 (Person, pk=person_id)}
+    context = {"onePerson": get_object_or_404 (Person, pk = person_id)}
     return render (request, "showOnePerson.html", context)
