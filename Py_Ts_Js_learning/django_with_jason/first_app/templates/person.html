@@ -13,7 +13,7 @@
     <p> Test recuperer les donnees dans une table de la bd </p>
     <ul>
         {% for person in persons  %}   
-        <li>{{ person.name}}</li>
+        <li><a href= "{% url 'show' person.id %}">{{ person.name}}</a></li>
         {% endfor %}
     </ul>
     {% lorem 4 p %}

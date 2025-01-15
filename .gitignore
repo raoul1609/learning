@@ -1,2 +1,5 @@
 .vscode/
-./Py_Ty_Js_learning/django_with_jason/.venv
+django_with_jason/.venv
+django_with_jason/__pycache__
+django_with_jason/first_app/__pycache__
+django_with_jason/polls/__pycache__
