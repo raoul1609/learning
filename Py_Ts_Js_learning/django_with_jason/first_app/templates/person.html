@@ -1,4 +1,5 @@
 {%load static%}
+{%load mesTags%}
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -17,6 +18,10 @@
         {% endfor %}
     </ul>
     {% lorem 4 p %}
+
+    <p>
+        {{ message|monFiltre }}
+    </p>
 </body>
 
 </html>

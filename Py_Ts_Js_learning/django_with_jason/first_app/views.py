@@ -10,7 +10,8 @@ def index (request) :
 # donc dans chaque app creer, il faut creer un dossier template ou seront stockes les templates
 
 def allInfos (request):
-    context = {"persons": Person.objects.all()}
+    context = {"persons": Person.objects.all(),
+               "message": "balise et filtre avec jason, test de creation de mes propres filtres"}
     return render (request, "person.html" , context)
     #return HttpResponse ("retourne toutes les personnes dans la base de donnees")
 

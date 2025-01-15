@@ -8,3 +8,10 @@ NB : pour faire les liens c'est mieux d'utiliser les noms utilises dans le fichi
     j'ai appele le chemin dans un first_app en saisant son nom (firstAppIndex)
 
 NB : %laquo; est une entite html 
+balise et filtre 1/2
+il existe plusieurs filtres sur les templates django, generalement place 
+apres un pipe (|), les filtres sont des methodes qui seront appliques aux
+variables dans le template, variables qui sont placees dans {{}}
+
+balise et filtre 2/2
+ici il est possible de creer ses propres balises
