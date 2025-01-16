@@ -15,3 +15,20 @@ variables dans le template, variables qui sont placees dans {{}}
 
 balise et filtre 2/2
 ici il est possible de creer ses propres balises
+
+#django9 : gestionnaires de requettes
+
+NB : l'object objects est un gestionnaire de requettes dans django
+
+NB : le modele de donnees est tres rattache a la base de donnees
+    je peux appeller une methode de la classe models avec default pour avoir les valeurs 
+
+select --> ( all(), get())
+order by --> order_by()
+limit  --> [:N]
+where  --> filter()
+insert --> create() qui est une methode du gestionnaire des requettes dans django, methode privilegee
+on peut utiliser la methode raw () qui prend la requette sql en parametres
+
+
+les migrations permettent de lier les modeles de donnees aux tables dans la bd

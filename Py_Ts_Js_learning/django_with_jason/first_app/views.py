@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
-from .models import Person
+from .models import Person, DeepModel
+
+import uuid
 
 def index (request) :
     return HttpResponse ("bienvenu dans notre first app")
@@ -21,3 +23,33 @@ def allInfos (request):
 def showOnePerson (request, person_id):
     context = {"onePerson": get_object_or_404 (Person, pk = person_id)}
     return render (request, "showOnePerson.html", context)
+
+
+"""
+    la fonction redirect est utile pour rediriger vers une autre page
+    Importantissimo : une view retourne un httpresponse
+    dans ce cas particule je pouvais ecrire un template pour afficher ma reponse
+"""
+
+def addDeepModels (request) :
+    generatedUuid = uuid.uuid4()
+    myJsonData = {"name": 'Neudjieu Raoul', "filere": 'Miaw', "tel" : 673314822}
+    mymodelToInsert = DeepModel.objects.create (id = generatedUuid, someData = myJsonData)
+    #return redirect ("firstAppIndex")
+    return HttpResponse ("Ok, le modele a ete ajoute avec succes. Verifier votre base de donnees")
+
+def editModel (request):
+    modelToEdit = DeepModel.objects.get (id="dcb2b4b5423c492bbd47dbe186473e07")
+    # la methode raw() prend la requette sql en parametres
+    #modelToEdit = DeepModel.objects.raw ("select * from first_app_deepmodel where id = 'dcb2b4b5423c492bbd47dbe186473e07'")
+    modelToEdit.someData["tel"] = 695870967
+    modelToEdit.save()
+    return HttpResponse ("le modele a ete mis a jour, verifier la base de donnees")
+
+"""
+    ceci est une fonction qui permet de supprimer un modele dans la base de donnees
+"""
+def deleteModel (request):
+    modelToDelete = DeepModel.objects.filter(id = "c83fd77a15c341579264b947c14a0809")
+    modelToDelete.delete()
+    return HttpResponse ("ok, les modeles ont ete supprime avec succes")

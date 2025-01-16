@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from datetime import date # importation de date dans le librairie datetime
 
@@ -22,3 +23,8 @@ class Etudiant (models.Model) :
     datOfBirth = models.DateField (verbose_name="Date de naissance", null=True, help_text="Fromat : AAAA-MM-JJ", default=date.today )
 
     #others = models.JSONField (null=True, )
+
+
+class DeepModel (models.Model):
+    id = models.UUIDField (primary_key=True, default=uuid.uuid4, editable=False)
+    someData = models.JSONField (default=dict)
