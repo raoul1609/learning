@@ -30,5 +30,11 @@ where  --> filter()
 insert --> create() qui est une methode du gestionnaire des requettes dans django, methode privilegee
 on peut utiliser la methode raw () qui prend la requette sql en parametres
 
-
 les migrations permettent de lier les modeles de donnees aux tables dans la bd
+
+#django 10 : administration (c'est a refaire)
+
+#djang0 11 : formulaire 1/2
+avec djnago il est possible de creer les formulaires qui vont s'afficher dans le browse du client
+
+L'attribut widget dans un champ de formulaire Django contrôle la manière dont le champ est affiché dans le navigateur web

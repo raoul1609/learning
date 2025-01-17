@@ -3,9 +3,19 @@ from django.http import HttpResponse
 from .models import Person, DeepModel
 
 import uuid
+from .forms import MyForm
 
 def index (request) :
-    return HttpResponse ("bienvenu dans notre first app")
+    #return HttpResponse ("bienvenu dans notre first app")
+    if request.method == 'POST' :
+        formulaire = MyForm(request.POST)
+
+        if formulaire.is_valid():
+            return redirect ("pollsIndex")
+    else:
+        formulaire = MyForm()
+    context = {"form": formulaire}
+    return render (request, 'index.html', context)
 
 # recuperer les donnees dans une table de la bd ?
 # django connait deja que les templates se trouvent dans le dossier template
@@ -27,8 +37,8 @@ def showOnePerson (request, person_id):
 
 """
     la fonction redirect est utile pour rediriger vers une autre page
-    Importantissimo : une view retourne un httpresponse
-    dans ce cas particule je pouvais ecrire un template pour afficher ma reponse
+    Importantissimo : une view retourne toujours un httpresponse
+    dans ce cas particulier je pouvais ecrire un template pour afficher ma reponse
 """
 
 def addDeepModels (request) :
