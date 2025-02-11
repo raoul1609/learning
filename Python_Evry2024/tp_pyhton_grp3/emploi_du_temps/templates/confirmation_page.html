@@ -1,0 +1,12 @@
+<head>
+    <title>
+        {{titre}}
+    </title>
+</head>
+<body>
+
+    {# <p>Vous avez progamme le cours de {{param2}}, dispense par {{param3}} a la date du {{param1}}</p> #}
+    <p> Ok, le programme a ete enregistre avec succes</p>
+    <p><a href="{% url 'showProgram' %}"> Consulter les programmes definis </a></p>
+    <p><a href= "{% url 'saveProgram' %}"> Enregistrer un autre programme </a></p>
+</body>

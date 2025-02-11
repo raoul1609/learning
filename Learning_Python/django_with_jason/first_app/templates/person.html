@@ -1,0 +1,27 @@
+{%load static%}
+{%load mesTags%}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Data coming from table first_app_person </title>
+    <link rel="stylesheet" href="{% static 'polls/css/main.css' %}">
+</head>
+
+<body>
+    <h1>Bienvenu dans le premier template avec django </h1>
+    <p> Test recuperer les donnees dans une table de la bd </p>
+    <ul>
+        {% for person in persons  %}   
+        <li><a href= "{% url 'show' person.id %}">{{ person.name}}</a></li>
+        {% endfor %}
+    </ul>
+    {% lorem 4 p %}
+
+    <p>
+        {{ message|monFiltre }}
+    </p>
+</body>
+
+</html>

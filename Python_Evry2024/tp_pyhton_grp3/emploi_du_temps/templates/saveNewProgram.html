@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <title>{{titre}} </title>
+</head>
+<body>
+    <img src = "{% static 'iut_evry.png'%}" alt = 'Logo de evry'>
+    <img src = "{% static 'logo_inubil.jpeg'%}" alt = 'Logo de inubil'>
+    <h1> {{message}} </h1>
+    <h2> INSTITUT UNIVERSITAIRE BILINGUE DU LITTORAL/ IUT D'EVRY <br>
+    EMPLOI DU TEMPS </h2>
+    <h3>PARCOURS: LICENCE METIER DE L'INFORMATIQUE APPLICATION WEB <br> SITE : SABLE</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in formulaire %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+                <ul class="errorlist">
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="sumit"> Enregistrer </button> 
+    </form>
+
+    <footer>
+        <p>&copy; TP Groupe 3, LP MIAW EVRY 2024/2025: Gestion de l'emploi du Temps</p>
+    </footer>
+</body>
+</html>

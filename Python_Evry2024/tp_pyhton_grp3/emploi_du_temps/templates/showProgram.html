@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <title>{{titre}} </title>
+</head>
+
+<body>
+    <img src = "{% static 'iut_evry.png'%}" alt = 'Logo de evry'>
+    <img src = "{% static 'logo_inubil.jpeg'%}" alt = 'Logo de inubil'>
+    <h1> {{message}} </h1>
+    <h2> INSTITUT UNIVERSITAIRE BILINGUE DU LITTORAL/ IUT D'EVRY <br>
+        EMPLOI DU TEMPS </h2>
+    <h3>PARCOURS: LICENCE METIER DE L'INFORMATIQUE APPLICATION WEB <br> SITE : SABLE</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>LUNDI </th>
+                <th>MARDI</th>
+                <th>MERCREDI</th>
+                <th>JEUDI</th>
+                <th>VENDREDI</th>
+                <th>SAMEDI</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for element in allPrograms %}
+            <tr>
+                <td>
+                    {
+                        "Cours" : {{element.cours}},
+                        "Enseignant": {{element.enseignant}},
+                        "Telephone" : {{element.teacherTel}},
+                        "Date" : {{element.jour}}
+                    }
+                </td>   
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p><a href= "{% url 'saveProgram' %}"> Ajouter un programme a l'emploi du temps </a></p>
+
+    <footer>
+        <p>&copy; TP Groupe 3, LP MIAW EVRY 2024/2025: Gestion de l'emploi du Temps</p>
+    </footer>
+</body>
+
+</html>

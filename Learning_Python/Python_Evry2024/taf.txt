@@ -1,0 +1,208 @@
+code python qui permet de retirer de l'argent dans un ditributeur de billets automatiques
+
+initial_solde = 59000
+
+1. Programmation Orientée Objet (POO)
+Créez une classe CompteBancaire avec les attributs suivants :
+
+titulaire (nom du titulaire du compte)
+
+solde (solde du compte)
+
+Ajoutez des méthodes pour :
+
+deposer(montant) : ajoute un montant au solde.
+
+retirer(montant) : retire un montant du solde (vérifiez que le solde est suffisant).
+
+afficher_solde() : affiche le solde actuel.
+
+Créez une instance de cette classe et testez les méthodes.
+
+2. Générateurs
+Écrivez un générateur fibonacci() qui génère une séquence infinie de nombres de Fibonacci.
+
+Utilisez ce générateur pour afficher les 10 premiers nombres de Fibonacci.
+
+3. Décorateurs
+Créez un décorateur temps_execution qui mesure le temps d'exécution d'une fonction.
+
+Testez-le sur une fonction qui calcule la somme des carrés des nombres de 1 à N.
+
+4. Manipulation de fichiers
+Écrivez un programme qui lit un fichier CSV contenant des données sur des étudiants (nom, âge, note) et calcule la moyenne des notes.
+
+Ensuite, écrivez les résultats (nom et moyenne) dans un nouveau fichier CSV.
+
+5. Expressions régulières (Regex)
+Écrivez un programme qui valide une adresse e-mail en utilisant une expression régulière.
+
+Testez-le avec plusieurs adresses e-mail pour vérifier si elles sont valides.
+
+6. Threading
+Créez un programme qui utilise le module threading pour exécuter deux fonctions en parallèle :
+
+Une fonction qui affiche les nombres pairs de 1 à 100.
+
+Une fonction qui affiche les nombres impairs de 1 à 100.
+
+7. Manipulation de données avec Pandas
+Utilisez la bibliothèque pandas pour lire un fichier CSV contenant des données sur les ventes (par exemple, produit, quantité, prix).
+
+Calculez le total des ventes pour chaque produit et affichez les résultats.
+
+8. API REST
+Utilisez la bibliothèque requests pour interagir avec une API publique (par exemple, l'API OpenWeatherMap).
+
+Récupérez les données météorologiques pour une ville donnée et affichez-les.
+
+9. Tests unitaires
+Écrivez une fonction diviser(a, b) qui divise deux nombres.
+
+Utilisez le module unittest pour écrire des tests unitaires qui vérifient :
+
+La division normale.
+
+La division par zéro (doit lever une exception).
+
+10. Manipulation de bases de données
+Utilisez le module sqlite3 pour créer une base de données SQLite contenant une table etudiants avec les colonnes id, nom, age, et note.
+
+Ajoutez des données à la table, puis écrivez une requête pour récupérer tous les étudiants ayant une note supérieure à 15.
+
+
+###########################################################
+
+
+Exercices de Développement Web avec Python
+1. Création d'un Blog
+Situation : Vous devez créer un blog simple où les utilisateurs peuvent lire, écrire et commenter des articles.
+
+Exercice :
+
+Utilisez Flask ou Django pour créer une application web avec les fonctionnalités suivantes :
+
+Page d'accueil affichant la liste des articles.
+
+Page de détail pour chaque article avec les commentaires.
+
+Formulaire pour ajouter un nouvel article (réservé aux utilisateurs connectés).
+
+Formulaire pour ajouter un commentaire (accessible à tous les utilisateurs).
+
+Stockez les articles et les commentaires dans une base de données SQLite ou PostgreSQL.
+
+2. Système d'Authentification
+Situation : Vous devez implémenter un système d'authentification pour une application web.
+
+Exercice :
+
+Utilisez Flask-Login ou Django pour créer un système d'authentification avec :
+
+Inscription des utilisateurs.
+
+Connexion et déconnexion.
+
+Protection des routes pour les utilisateurs connectés uniquement.
+
+Stockez les informations des utilisateurs dans une base de données.
+
+3. API REST pour une Application de Gestion de Tâches
+Situation : Vous devez créer une API REST pour une application de gestion de tâches.
+
+Exercice :
+
+Utilisez Flask ou FastAPI pour créer une API avec les endpoints suivants :
+
+GET /taches : Récupère la liste des tâches.
+
+POST /taches : Ajoute une nouvelle tâche.
+
+PUT /taches/<id> : Met à jour une tâche existante.
+
+DELETE /taches/<id> : Supprime une tâche.
+
+Stockez les tâches dans une base de données SQLite ou PostgreSQL.
+
+Ajoutez une authentification basée sur les tokens pour sécuriser l'API.
+
+4. Gestion des Sessions Utilisateurs
+Situation : Vous devez gérer les sessions utilisateurs pour une application web.
+
+Exercice :
+
+Utilisez Flask-Session ou Django pour implémenter la gestion des sessions avec :
+
+Stockage des sessions dans une base de données ou un cache Redis.
+
+Expiration des sessions après une période d'inactivité.
+
+Affichage des informations de session pour l'utilisateur connecté.
+
+5. Intégration de Paiement
+Situation : Vous devez intégrer un système de paiement dans une application web.
+
+Exercice :
+
+Utilisez Stripe ou PayPal pour intégrer un système de paiement dans une application Flask ou Django.
+
+Créez une page de checkout où les utilisateurs peuvent entrer leurs informations de paiement.
+
+Gérez les webhooks pour traiter les événements de paiement (par exemple, paiement réussi, échec de paiement).
+
+6. Gestion des Fichiers Utilisateurs
+Situation : Vous devez permettre aux utilisateurs de télécharger et de téléverser des fichiers.
+
+Exercice :
+
+Utilisez Flask ou Django pour créer une application web où les utilisateurs peuvent :
+
+Téléverser des fichiers (images, documents, etc.).
+
+Télécharger les fichiers téléversés.
+
+Voir la liste des fichiers téléversés.
+
+Stockez les fichiers dans un répertoire sur le serveur ou utilisez un service de stockage cloud comme AWS S3.
+
+7. Création d'un Dashboard Administratif
+Situation : Vous devez créer un dashboard administratif pour gérer les utilisateurs et les contenus d'une application web.
+
+Exercice :
+
+Utilisez Flask-Admin ou Django Admin pour créer un dashboard administratif avec :
+
+Gestion des utilisateurs (création, modification, suppression).
+
+Gestion des articles (création, modification, suppression).
+
+Statistiques sur l'utilisation de l'application (nombre d'utilisateurs, nombre d'articles, etc.).
+
+8. Intégration de Recherche en Temps Réel
+Situation : Vous devez implémenter une fonctionnalité de recherche en temps réel dans une application web.
+
+Exercice :
+
+Utilisez Elasticsearch ou Whoosh pour implémenter une recherche en temps réel dans une application Flask ou Django.
+
+Créez une barre de recherche qui affiche les résultats à mesure que l'utilisateur tape.
+
+9. Gestion des Notifications
+Situation : Vous devez implémenter un système de notifications pour une application web.
+
+Exercice :
+
+Utilisez Flask-SocketIO ou Django Channels pour implémenter des notifications en temps réel.
+
+Créez un système où les utilisateurs reçoivent des notifications lorsqu'un nouvel article est publié ou lorsqu'ils reçoivent un nouveau commentaire.
+
+10. Déploiement d'une Application Web
+Situation : Vous devez déployer une application web sur un serveur en production.
+
+Exercice :
+
+Utilisez Heroku, AWS, ou DigitalOcean pour déployer une application Flask ou Django.
+
+Configurez un serveur web (par exemple, Nginx ou Apache) et un serveur d'application (par exemple, Gunicorn ou uWSGI).
+
+Configurez un domaine et un certificat SSL pour sécuriser l'application.
