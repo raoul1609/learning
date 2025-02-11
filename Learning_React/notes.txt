@@ -1,0 +1,23 @@
+tutto sur React
+
+- les composants servent pour renvoyer du contenu
+
+### C'EST QUOI UN COMPOSANT REACT ? ###
+
+Un composant React est une fonction JavaScript 
+    avec un peu de balisage à l’intérieur.
+    
+le nom de cette fonction doit commencer par une majuscule
+
+### LES REGLES DU JSX ###
+- une fonction ne doit renvoyer qu'un seul noeud JSX racine.(<div></div>, ou bien un fragment <></>)
+- jsx exige que toutes les balises soient explicitement fermees
+- jsx utilse le camelCase
+- un fichier ne peut avoir qu'un seul export par defaut et plusieurs exports nommes.
+- on utilise l'export par defaut si le fichier n'exporte qu'un seul composant (une seule fonction)
+    les exports nommes servent pour exposer plusieurs composants et valeurs
+- {{}} permet de passer les autres objets dans un JSX
+- {} pour passer les chaines de caracteres et expressions JavaScript
+
+### PASSER DES PROPS A UN COMPOSANT ###
+- les fonctions composants React ne prennent qu'un seul argument : l'objet props

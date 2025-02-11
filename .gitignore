@@ -3,3 +3,5 @@ django_with_jason/.venv
 django_with_jason/__pycache__
 django_with_jason/first_app/__pycache__
 django_with_jason/polls/__pycache__
+#cette ligne ignore tous les fichiers avec l'extension .pyc
+*.pyc 
