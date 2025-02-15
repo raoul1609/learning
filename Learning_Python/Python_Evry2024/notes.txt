@@ -6,3 +6,27 @@
 NB : le polymorphisme en python se fait avec les methodes speciales, le principe du polymorphisme est d'avoir des fonctions qui ont comportements differents en fonctions
 des entrees
 avec les methodes speciales, il est possible redefinir le comportement des des operateurs
+
+
+## Différence entre return et yield
+
+return :
+    Termine l'exécution de la fonction et renvoie une valeur.
+    La fonction recommence depuis le début à chaque appel.
+
+yield :
+    Suspend l'exécution de la fonction et renvoie une valeur.
+    La fonction reprend là où elle s'était arrêtée au prochain appel.
+
+
+## En Python, plusieurs concepts et fonctionnalités s'apparentent à l'évaluation paresseuse (laziness) :
+
+    - Générateurs et expressions génératrices.
+    - Fonctions map, filter, zip.
+    - Modules itertools et functools.
+    - Lecture paresseuse de fichiers.
+    - Propriétés paresseuses avec @property.
+    - Bibliothèques tierces comme Pandas, Dask et PySpark.
+    - Coroutines avec async/await.
+
+Ces outils permettent de retarder les calculs ou le chargement de données jusqu'à ce qu'ils soient nécessaires, ce qui améliore l'efficacité et réduit l'utilisation de la mémoire.
