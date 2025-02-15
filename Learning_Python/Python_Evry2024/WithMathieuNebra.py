@@ -79,12 +79,67 @@ class ItRevStr():
 """
     c'est quoi les generateurs ?
     exemple creation d'un generateur qui affiche les nombre compris entre deux nombres a et b / a & b exclus.
+
+    pour tester mon generateur : 
+        - me placer dans le directory ou se trouve mon fichier WithMathieuNebra
+        - appeler l'interpreteur de pyhton : python3
+        - faire un from WithMathieuNebra import *
+        - creer une variable qui contenir l'execution de mon generateur en utilisant la fonction iter, vu que c'est une fonction : 
+            executionGenerateur = iter(generateur(nbre1, nbre2))
+        - appeler la fonction next en lui passant executionGenerator
+        - a chaque fois qu'on appelle next(executionGenerator), on obtient une valeur comprise entre les deux bornes
     
 """
 def generateur(borneInf, borneSup): 
     while borneInf < borneSup : 
         yield borneInf
         borneInf += 1
+
+"""
+    generateur qui prend un parametre lors du parcours. le principe est que losrqu'il renvoi une valeur, comme la fonction se met en pause, 
+        on peut lui passer un parametre
+""" 
+
+def generateurWithParam(borneInf, borneSup):
+    while borneInf < borneSup :
+        valeur_recue = (yield borneInf)  #parentheses ne pas a omettre
+        if valeur_recue is not None :
+            borneInf = valeur_recue
+        borneInf += 1
         
-        
-        
+"""
+    un decorateur est une fonction qui prend une fonction en parametres et renvoies une fonction
+    - le decorateur modifie le comportement de la fonction passee en parametre
+    - meme principe que les fonctions d'ordre superieur en haskell ?
+"""
+
+def decorateur(fonction):
+
+    def fonctionARenvoyer():
+
+        """  Fonction que l'on va renvoyer. Il s'agit en fait d'une
+            version
+            un peu modifiée de notre fonction originellement définie. On se
+            contente d'afficher un avertissement avant d'exécuter notre
+            fonction
+            originellement définie
+        """
+        return fonction()
+
+    return fonctionARenvoyer
+
+@decorateur
+def salut():
+    print("salut, premiers pas avec les decorateurs.")
+
+
+
+### LES ANNOTATIONS DE TYPE AVEC PYTHON ####
+"""
+    mypy et pyright annalysent de facon statique le code python
+    avec python il est possible de faire du statique, preciser le type des variables, les types de retour des fonctions
+    les modules typing et collections.abc sont utiles pour ecrire du python statique
+    il est possible de faire des annotations de type avec python, ca se rapproche un peu des principes du fonctionnel,
+    itertools et functools offre quelques effets du fonctionnel avec python
+    mot Newtype("nom du type", type de donnees de)  permet creer un nouveau type
+"""

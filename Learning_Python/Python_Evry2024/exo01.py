@@ -32,7 +32,7 @@ class Client :
 
     # creer une classe afficher les informations du client 
     def afficher(self):
-        print ("le client {0} {1} dont le numero de la CNI est {3} a pour numero de telephone {4}".format (self.Nom, self.Prenom, self.CNI, self.Tel))
+        print ("le client {0} {1} dont le numero de la CNI est {2} a pour numero de telephone {3}".format (self.Nom, self.Prenom, self.CNI, self.Tel))
 
 
 #### DEFINITION DE LA CLASSE COMPTE #### 

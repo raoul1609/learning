@@ -1,7 +1,7 @@
 - le chapitre sur les methodes speciales avec python est tres interessant, je dois lire ce chapitre dans plusieurs sources (avec jason, avec xavki, doc officielle)
-- je peux deja creer ma propre exceptio  -> application directe de la notion d'heritage
+- je peux deja creer ma propre exception  -> application directe de la notion d'heritage
 
-- est ce que le while remplace la recursion avec pyhton? ou dans l'Orientée Objet en general?
+- est ce que le while remplace la recursion avec pyhton? ou dans l'Orientée Objet en general? ==> chacun est utile en fonction du contexte d'utilisation
 
 NB : le polymorphisme en python se fait avec les methodes speciales, le principe du polymorphisme est d'avoir des fonctions qui ont comportements differents en fonctions
 des entrees
