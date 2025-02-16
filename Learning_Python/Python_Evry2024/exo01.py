@@ -46,12 +46,25 @@ class Compte :
         Compte.code +=1   # attribut de la classe qui s'incrememte
 
         # attribut de l'objet Compte
-        self.solde = 0
+        self._solde = 0
         self._numeroCompte = 212341231232 # est un attribut qui n'est pas accessible or de la classe Compte, on va creer une propriete pour acceder a cet attribut
         self.proprietaire = client
 
     ####### ENCAPSULATION AVEC PYTHON : TEST SUR LA NOTION DE PROPRIETE #############
     ##################################
+
+    """
+        pour definir les proprietes en python on utilise la fonction property() et les decorateurs :
+            @property : Définit une méthode comme un getter. Par exemple, age devient une propriété en lecture seule.
+            @<nom_propriété>.setter : Définit une méthode comme un setter. Cela permet de modifier la valeur de la propriété.
+            @<nom_propriété>.deleter : Définit une méthode comme un deleter. Cela permet de supprimer la propriété.
+
+        la syntaxe avec la fonction property() est plus utilise quand on a deja des fonctions definies, qu'on veut definir comme getteur, setteur ou deletteur 
+        d'un attribut
+        la syntaxe avec les decorateurs est plus modernes, plus lisible et plus explicite
+    """
+
+    ## SYNTAXE AVEC LA FONCTION property()
 
     def _get_numeroCompte(self):
         """ mon accesseur, qui retourne la valeur de l'attribut numeroDeCompte"""
@@ -62,6 +75,29 @@ class Compte :
         self._numeroCompte = newNumAccount
 
     numeroCompte = property (_get_numeroCompte, _set_numeroDeCompte) # property prend dans l'ordre: un accesseur, ensuite un mutateur, etc...
+
+    ## SYNTAXE AVEC LES DECORATEURS 
+    """
+        il faut noter que les nom des methodes doivent etre identiques pour le setter, le getter et le deleter
+    """
+
+    @property
+    def solde(self):
+        return self._solde
+    
+    @solde.setter
+    def solde(self, newSolde):
+        if newSolde < 0 :
+            raise ValueError ("pour le moment, on considere que le solde ne pas etre negatif")
+        else:
+            self._solde = newSolde
+
+    @solde.deleter
+    def solde(self):
+        print ("suppresion de l'attribut solde de ma classe")
+        del self._solde
+
+
 
     ####################################
 
