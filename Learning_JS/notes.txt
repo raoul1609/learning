@@ -1,0 +1,37 @@
+- installer npm : gestionnaire des packets javascript
+- installer nodeJS et ExpressJS
+
+creer un projet avec node : 
+- creer un repertoire avec mkdir 
+- se placer a la racine du repertoire
+- npm init : pour construire le projet 
+- npm install pkgname : pour installer les dependances, dans ce cas express
+
+express ne propose aucun decoupage de fichier. le dev peut decouper ses ficier en fonction de ses besoins ou
+du style architectural de preference (architecture a couches, mvc, hexagonal)
+
+- le package express-generator peut de creer un sequellete d'application., il doit etre installer avec la commande :
+npm install express-generator -g
+NB : apres l'installation, npm peut demander la mise a jour du module mkdirp
+
+- avec la commande express nom_de_l'application, on peut construire des applications, avec des fichiers par defaut.
+- il faut lance la commande SET DEBUG=nom_app:*; npm start ou tout simplement la commande npm start pour demarrer le serveur.
+
+NB : Express est plus leger que NodeJS, il vient avec certaines taches automatisees sous forme de fonctions qu'on utilise seulement
+
+- dependance pour se connecter a la base de donnees : npm install mysql2
+- installer dotenv
+
+TAF : comment creer une API avec ExpressJS : je suis l'exemple de Deepseek
+1 -  les models sont crees dans un repertoire models
+2 - creer un controlleur 
+3 - creer un fichier .env qui contient les variables d'environnement de connexion a la base de donnees 
+4 - le body de la requette c'est un raw, un objet JSON
+
+
+TAF : - creer un modele dans un projet ExpressJS
+      - effectuer les migrations 
+      - valider les donnees d'un formulaire 
+      - publier un evenement sur une queue
+
+NB: axios permet la communication entre microservices

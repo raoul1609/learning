@@ -1,0 +1,110 @@
+1. Application de base
+    Objectif : Créer une application Express simple.
+
+    Créez une application Express qui répond avec "Hello, World!" à la route /.
+
+    Ajoutez une route /about qui renvoie une page HTML simple avec des informations sur vous.
+
+2. Gestion des routes et des paramètres
+    Objectif : Pratiquer la gestion des routes et des paramètres.
+
+    Créez une route /users/:id qui renvoie des informations sur un utilisateur spécifique en fonction de l'ID passé en paramètre.
+
+    Ajoutez une route /search qui accepte un paramètre de requête q et renvoie des résultats de recherche simulés.
+
+3. Utilisation des middlewares
+    Objectif : Comprendre et utiliser les middlewares.
+
+    Créez un middleware qui enregistre la méthode HTTP et l'URL de chaque requête dans la console.
+
+    Ajoutez un middleware pour parser les corps de requête JSON (express.json()).
+
+    Créez un middleware personnalisé qui vérifie si un utilisateur est authentifié (simulez une authentification basique).
+
+4. Validation des données
+    Objectif : Valider les données entrantes.
+
+    Utilisez express-validator pour valider les données d'un formulaire d'inscription (nom, email, mot de passe).
+
+    Renvoyez des messages d'erreur détaillés si la validation échoue.
+
+5. Gestion des erreurs
+    Objectif : Gérer les erreurs de manière centralisée.
+
+    Créez un middleware de gestion des erreurs qui capture les erreurs et renvoie une réponse JSON avec un message d'erreur et un code de statut approprié.
+
+    Simulez une erreur 404 pour les routes non trouvées.
+
+6. Templates et rendu côté serveur
+    Objectif : Utiliser un moteur de templates pour le rendu côté serveur.
+
+    Installez et configurez un moteur de templates comme EJS ou Pug.
+
+    Créez une route /profile qui rend une page de profil avec des données dynamiques (nom, email, etc.).
+
+7. Connexion à une base de données
+    Objectif : Interagir avec une base de données.
+
+    Créez une base de données MySQL ou MongoDB.
+
+    Utilisez Sequelize (pour SQL) ou Mongoose (pour MongoDB) pour interagir avec la base de données.
+
+    Créez des routes pour :
+
+    Récupérer tous les utilisateurs (GET /users).
+
+    Ajouter un nouvel utilisateur (POST /users).
+
+    Mettre à jour un utilisateur (PUT /users/:id).
+
+    Supprimer un utilisateur (DELETE /users/:id).
+
+8. Authentification et sécurité
+    Objectif : Implémenter l'authentification et sécuriser l'application.
+
+    Utilisez passport.js pour implémenter l'authentification par JWT.
+
+    Créez des routes pour :
+
+    Inscription (POST /register).
+
+    Connexion (POST /login).
+
+    Profil utilisateur (GET /profile) protégé par authentification.
+
+    Ajoutez helmet pour sécuriser les en-têtes HTTP.
+
+9. Gestion des sessions et des cookies
+    Objectif : Gérer les sessions et les cookies.
+
+    Utilisez express-session pour gérer les sessions utilisateur.
+
+    Créez une route /login qui enregistre l'utilisateur dans la session.
+
+    Créez une route /logout qui détruit la session.
+
+10. Création d'une API RESTful
+    Objectif : Concevoir et implémenter une API RESTful.
+
+    Créez une API RESTful pour gérer une ressource (ex : articles, produits).
+
+    Implémentez les routes suivantes :
+
+    GET /articles : Récupérer tous les articles.
+
+    GET /articles/:id : Récupérer un article par son ID.
+
+    POST /articles : Créer un nouvel article.
+
+    PUT /articles/:id : Mettre à jour un article.
+
+    DELETE /articles/:id : Supprimer un article.
+
+    Documentez l'API avec Swagger.
+
+11. Tests
+    Objectif : Écrire des tests pour l'application.
+
+    Utilisez Jest ou Mocha pour écrire des tests unitaires pour les routes et les middlewares.
+
+    Écrivez des tests d'intégration avec Supertest pour tester les routes de l'API.
