@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> With seb code </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container-fluid">
+
+        <h1> Appunti su bootstrap sul canale seb code </h1>
+        <h2> La classe container de bootstrap</h2>
+
+        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque ea reprehenderit officia cupiditate perspiciatis assumenda quia labore numquam. Provident recusandae vitae facilis commodi? Dolorem, veniam magnam fugit quasi mollitia beatae? Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum mollitia, error eum voluptates est a facere inventore dolore obcaecati quod autem neque velit, sint expedita totam voluptatum id? Nemo, fuga!</p>
+    </div>
+    
+    <!-- ## la classe container -->
+    <div class="container">
+        <div class="row">
+            <div class="col border">1</div>
+            <div class="col border">2</div>
+            <div class="col border">3</div>
+            <div class="col border">4</div>
+            <div class="col border">5</div>
+            <div class="col border">6</div>
+            <div class="col border">7</div>
+            <div class="col border">8</div>
+            <div class="col border">9</div>
+            <div class="col border">10</div>
+            <div class="col border">11</div>
+            <div class="col border">12</div>
+        </div>
+    </div>
+
+    <!-- ## tuto sur le syteme de grille de bootstrap : qui divise l'ecran en 12 colonnes 
+     raccourcis : div.col{$}*12 -->
+    <div class="container">
+        <div class="row">
+            <div class="col border">A</div>
+            <div class="col-5 border">B</div>
+        </div>
+    </div>
+
+    <!-- ## grille responsive de bootstrap 
+
+        md : prefixe pour indiquer ecran a taille moyenne 
+        lg : prefixe pour indiquer ecran a taille largue
+        xl : tres large
+        xxl : tres tres large
+        col-md-6 : sur ecran a taille moyenne les colonnes auront taille 6, du coup on aura deux colonnes par ligne dans le rendu.
+        
+        bootstrap est mobile first cad qu'il privilige l'affichage sur petits ecrans que sur grands
+
+        on peut bien enlever le col-12, car il le deja par defaut
+        -->
+
+ 
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-3">
+                <h2> colonne 1</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae libero accusantium eius perspiciatis perferendis odit consequatur, maxime, excepturi voluptate dignissimos ipsa eaque est cum assumenda minima nihil dolore saepe optio!</p>
+            </div> 
+            <div class="col-12 col-md-6 col-lg-3">
+                <h2> colonne 2</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae libero accusantium eius perspiciatis perferendis odit consequatur, maxime, excepturi voluptate dignissimos ipsa eaque est cum assumenda minima nihil dolore saepe optio!</p>
+            </div> 
+            <div class="col-12 col-md-6 col-lg-3">
+                <h2> colonne 3</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae libero accusantium eius perspiciatis perferendis odit consequatur, maxime, excepturi voluptate dignissimos ipsa eaque est cum assumenda minima nihil dolore saepe optio!</p>
+            </div> 
+            <div class="col-12 col-md-6 col-lg-3">
+                <h2> colonne 4</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae libero accusantium eius perspiciatis perferendis odit consequatur, maxime, excepturi voluptate dignissimos ipsa eaque est cum assumenda minima nihil dolore saepe optio!</p>
+            </div> 
+        </div>
+    </div>
+
+    <!-- autre methode pour grille responsive : travailler directement sur la classe parent 
+    quand on agit sur la classe directement, le chiffre represente le nombre de colonne dans le rendu-->
+
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
+            <div class="col">
+                <h2>Element 1 </h2>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab minima saepe recusandae quaerat ipsa placeat nostrum delectus optio minus amet fugit fugiat, dolore dicta quos at, cupiditate earum eos incidunt.</p>
+            </div>
+            <div class="col">
+                <h2>Element 2 </h2>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab minima saepe recusandae quaerat ipsa placeat nostrum delectus optio minus amet fugit fugiat, dolore dicta quos at, cupiditate earum eos incidunt.</p>
+            </div>
+            <div class="col">
+                <h2>Element 3 </h2>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab minima saepe recusandae quaerat ipsa placeat nostrum delectus optio minus amet fugit fugiat, dolore dicta quos at, cupiditate earum eos incidunt.</p>
+            </div>
+            <div class="col">
+                <h2>Element 4 </h2>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab minima saepe recusandae quaerat ipsa placeat nostrum delectus optio minus amet fugit fugiat, dolore dicta quos at, cupiditate earum eos incidunt.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ## les typographies avec bootstrap
+    h${Balise h$}*6 raccourcis pour creer 6 niveaux de balise de type h, de h1 a h6, dans le rendu le $ est remplace par un chiffre
+
+    - avec les classes hx, et display-x, on peut modifier la typographie d'un texte
+    -->
+    <div class="container">
+        <div class="row">
+            <h1 class="h3">Balise H1</h1>
+            <h2>Balise H2</h2>
+            <h3>Balise H3</h3>
+            <h4>Balise H4</h4>
+            <h5>Balise H5</h5>
+            <h6 class="h1">Balise H6</h6>
+            <p class="display-1">Mettre en evidence un texte</p>
+        </div>
+
+        <!-- on peut utliser la classe list-unstyled 
+        - list-inline pour classer les elements de la liste sur une ligne
+        - list-inline-item
+        - text-start  : pour justifier a gauche 
+        - text-end   : pour justifier a droite 
+        - text-center : pour centrer le texte
+        -->
+
+        <div class="container">
+            <h2 class="text-center">Liste a puces </h2>
+            <ul class="list-inline">
+                <li class="list-inline-item">Element_a_puce 1</li>
+                <li class="list-inline-item">Element_a_puce 2</li>
+                <li class="list-inline-item">Element_a_puce 3</li>
+                <li class="list-inline-item">Element_a_puce 4</li>
+                <li class="list-inline-item">Element_a_puce 5</li>
+                <li class="list-inline-item">Element_a_puce 6</li>
+            </ul>
+
+            <h2 class="text-end">Liste ordonnee</h2>
+            <ol class="list-unstyled">
+                <li>Element_a_puce 1</li>
+                <li>Element_a_puce 2</li>
+                <li>Element_a_puce 3</li>
+                <li>Element_a_puce 4</li>
+                <li>Element_a_puce 5</li>
+                <li>Element_a_puce 6</li>
+            </ol>
+        </div>
+    </div>
+
+    <!--## les images 
+    - class img-fluid pour rendre une image responsive 
+    - class img-thumbnail pour mettre une bordure sur une image
+    - class w-40 pour afficher l'image sur une largeur de 40
+    - class rounded pour avoir une les bords arrondis
+    - class mx-auto pour centrer les elements a l'interieur d'un conteneur -->
+    
+    <div class="container">
+        <div class="w-25 float-start">
+            <img class="img-fluid rounded mx-auto " src="images/call-me-fred-fJSRg-r7LuI-unsplash.jpg" alt="une image">
+        </div>
+        <div class="w-25 float-end" >
+            <img class="img-fluid rounded mx-auto " src="images/cytonn-photography-vWchRczcQwM-unsplash.jpg" alt="une image">
+        </div>
+    </div>
+    
+    
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
