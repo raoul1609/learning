@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> With seb code </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+    crossorigin="anonymous">
 </head>
 <body>
     <div class="container-fluid">
@@ -155,12 +157,90 @@
     - class rounded pour avoir une les bords arrondis
     - class mx-auto pour centrer les elements a l'interieur d'un conteneur -->
     
-    <div class="container">
+    <div class="container ">
         <div class="w-25 float-start">
             <img class="img-fluid rounded mx-auto " src="images/call-me-fred-fJSRg-r7LuI-unsplash.jpg" alt="une image">
         </div>
         <div class="w-25 float-end" >
             <img class="img-fluid rounded mx-auto " src="images/cytonn-photography-vWchRczcQwM-unsplash.jpg" alt="une image">
+        </div>
+    </div>
+
+    <!-- ##les tables avec bootstrap 
+     - class table pour mettre en forme une table avec bootstrap 
+     - table-primary pour mettre la couleur primaire sur une table 
+     - table-secondary pour la couleur secondaire 
+     - table-success pour mettre le tableau en vert -->
+    <div class="container my-3">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Age</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Neudjieu</td>
+                    <td>Raoul</td>
+                    <td class="table-success">28</td>
+                </tr>
+                <tr>
+                    <td>Tchounou</td>
+                    <td>Mathieu</td>
+                    <td>73</td>
+                </tr>
+                <tr>
+                    <td>Ngwado</td>
+                    <td>Frida</td>
+                    <td>56</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ## les classes utilitaires : les backgrounds-color 
+    - bg-gradient : pour faire un degrade de couleur 
+    - bg-success bg-opacity-50 : pour mettre l'opacite de la couleur success a 50% -->
+    <div class="container">
+        <p class="bg-primary text-white">bg-primary</p>
+        <p class="bg-secondary text-white">bg-secondary</p>
+        <p class="bg-success text-white">bg-success</p>
+        <p class="bg-danger text-white">bg-danger</p>
+        <p class="bg-warning text-white">bg-warning</p>
+        <p class="bg-info">bg-info</p>
+        <p class="bg-light text-primary">bg-light</p>
+    </div>
+
+    <!-- ## les classes utilitaires : les marges externes et internes.
+    - mt-5 : margin top de 5, les nombres sont compris en 0 et 5 
+    - p-5 : padding de 5 
+    - my-5 : mettre une valeur a en haut et en bas (au lieu de faire mt et mb) 
+    - mx-5 : mettre une marge a gauche et a droite
+    - idem pour px-val et py-val -->
+    <div class="container">
+        <p class="bg-primary">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deserunt provident ad molestiae dolores optio assumenda quasi ab magni ullam expedita voluptas ratione illo aut voluptatem perspiciatis eos numquam, maiores culpa.
+        </p>
+    </div>
+
+    <!-- ## les classes utilitaires : les bordures 
+    border-x : apaissir les bords 
+    rounded-top : arrondir sur les bords du haut
+    border-top : bordure en haut
+    border-bottom : bordure en bas
+    border-start: bordure a gauche 
+    border-end : bordure a droite -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p class="border border-3 border-primary rounded-2 border-opacity-50 py-1 px-1 ">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur ipsam exercitationem voluptas dolor ullam iste dignissimos cum vel porro, natus fugiat ipsa officiis, suscipit totam ratione incidunt illum magnam facilis veniam nemo quaerat! Reprehenderit ipsa veritatis officiis hic voluptatibus sunt eius laudantium, debitis eveniet, aliquid doloremque quos dolorum, voluptates rerum?</p>
+            </div>
+            <div class="col">
+                <p class="border border-secondary ">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur ipsam exercitationem voluptas dolor ullam iste dignissimos cum vel porro, natus fugiat ipsa officiis, suscipit totam ratione incidunt illum magnam facilis veniam nemo quaerat! Reprehenderit ipsa veritatis officiis hic voluptatibus sunt eius laudantium, debitis eveniet, aliquid doloremque quos dolorum, voluptates rerum?</p>
+            </div>
         </div>
     </div>
     
