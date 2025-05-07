@@ -1,2 +1,5 @@
 #cette ligne ignore tous les fichiers avec l'extension .pyc
 *.pyc
+__pycache__
+pythonEvry
+.mypy_cache

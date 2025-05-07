@@ -29,4 +29,34 @@ yield :
     - Bibliothèques tierces comme Pandas, Dask et PySpark.
     - Coroutines avec async/await.
 
-Ces outils permettent de retarder les calculs ou le chargement de données jusqu'à ce qu'ils soient nécessaires, ce qui améliore l'efficacité et réduit l'utilisation de la mémoire.
+Ces outils permettent de retarder les calculs ou le chargement de données jusqu'à ce qu'ils soient nécessaires, 
+    ce qui améliore l'efficacité et réduit l'utilisation de la mémoire.
+
+
+# TAF : 
+    les interfaces en python ? pour implementer les interfaces, python fournit plusieurs outils : 
+        - les classes abstraites (abc)
+        - le duck typing et les protocoles ? utilite et avantages ?
+        - 
+
+    la programmation asysnchrone ?
+    
+    la composition sur les classes ? : lier deux classes avec un attribut,
+        attribut est une instance d'autres classe.
+        la classe Book a un attribut author qui est une instance de la classe Author, cela permet la separation, eviter un comportement 
+            monolithe
+
+        - la composition est souvent privilegie par rapport a l'heritage, car elle favorise le low coupling
+        - on utilise l'heritage lorsque la relation est 'is-a' :'est un'
+            exp : un chien est un animal, une voiture electrique est une voiture, ...
+            il faut aussi noter que l'heritage cree une forte dependance entre les classes de bases
+               et les classes derivees.
+
+        - utiliser la composition quand la relation est 'has a' : 'a un'
+            exp : une voiture a un moteur, un ordinateur a un processeur, un humain a un coeur, ...
+
+    les methodes abstraites : methodes definies dans la classe mere, dont chaque classe doit l'implementer a sa facon 
+
+    difference entre classe et dataclasses ??
+        - les dataclasses automatiquent les methodes : __init__(), __repr__(), __eq__(), __lt__()
+        - les classes sont plus flexibles car la logique d'instanciation est faite par nous meme

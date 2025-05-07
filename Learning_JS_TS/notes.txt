@@ -35,3 +35,20 @@ TAF : - creer un modele dans un projet ExpressJS
       - publier un evenement sur une queue
 
 NB: axios permet la communication entre microservices
+
+- les types de donnees en js ?
+- a part le typage dynamique de typescript, que offre de nouveau typescript ?
+- les fonction flechees equivalent les fonctions lambda en python ?
+- la programmation asynchrone avec python ?
+- bien comprendre la programmation asynchrone avec js
+- bien comprendre la programmtion synchrone avec js
+
+
+
+####################################################################
+
+- npm init -y pour creer un nouveau projet 
+- npm install typescript --save-dev : pour installer typescript comme dependance du projet
+- creer le fichier tsconfig.ts pour creer les paramètres de compilation, repo de destination et fichiers sources.
+- apres configuration du fichier tsconfig, la commande npx tsc --watch permet de compiler le code ts en js 
+- sans la config, il faut taper la commande npx tsc fichier.ts

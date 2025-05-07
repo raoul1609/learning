@@ -157,6 +157,23 @@ def generateurWithParam(borneInf, borneSup):
             borneInf = valeur_recue
         borneInf += 1
 
+
+def reviewed_generator(nbre1, nbre2):
+    '''
+        si la borne inferieur est superieure a la borne superieur, le parcours se fera dans l'autre sens
+    '''
+    if (nbre1 < nbre2) :
+        begining = nbre1 + 1 
+        while (begining < nbre2):
+            yield begining
+            begining += 1
+    # le generateur commence le deconte a partir de la borne superieure
+    else :
+        endborn = nbre2 - 1 
+        while (endborn < nbre2):
+            yield endborn
+            endborn -= 1
+
 # pour creer un generateur on peut aussi utiliser une expression generatrice 
 
 gen = (x*2 for x in range(5))

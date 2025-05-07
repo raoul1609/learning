@@ -1,0 +1,42 @@
+## PIPE AND RIDIRECTIONS
+
+    # le pipe ( | ): permet d'envoyer la sortie d'un process en entree a un autre process 
+        cat encaissements.txt | wc : compte le nombre de ligne et de colonne dans mon fichier encaissements.txt 
+
+    # le output direction truncate ( > ) : envoi (std input (identifier par 0), std output (id 1) ou les erreurs (id 2) )dans un fichier 
+    exp : ls > fichier.txt
+    - le fichier est cree si il n'existe pas.
+    - le contenu du fichier est efface, si il existe.
+    - lorsque on ne specifie pas le numero, c'est le 1 qui est considere.
+
+    # le output direction append (>>) : ajoute du contenu a la suite du document indique en parametre
+    exp : ls >> fichier.txt 
+    ajoute le resultat de ls, a la suite de fichier.txt
+
+    # le intput direction (<) : envoi le contenu du fichier specifie, a la commande specifiee.
+    exp: cat < fichier.txt : envoi le contenu de fichier.txt a la cat pour qu'il affiche.#
+
+    # le here document (<<) : pas tres bien compris son utilite
+
+## COMMAND AND BUILT-INTS
+    what is the difference between built-ints and command ??
+    # la commande : command -V echo , dit si echo est un builtin (primitive du bash) ou une commande
+
+# pour inserer une variable dans une chaine de characteres : echo "insere ma $variable"
+# pour inserer une commande : echo "inserer ma $(commande)"
+
+la commande echo se termine toujours avec un retour a la ligne. echo -n "hello guys" permet de en pas faire un retour a la ligne
+pour enchainer les commandes, on utilise le ;
+    exp : echo "bonjour";echo "le monde"
+
+# pour creer une variable : 
+    - nom_variable=valeur, pas d'espace entre le signe '=' -> nom_variable peut changer au cours de l'execution
+    - avec declare : declare -r name="Raoul" -> cette variable est en lecture seule, ne peut pas etre modifier
+    - declare -l some_text="there is one text" -> -l permet de convertir l'entree en miniscule 
+    - declare -L some_text="ther is one text" -> -L permet de convertir l'entree en majuscule
+
+# les operations arithmetiques avec le bash:
+    - arithmetic expension : echo $((4+4)) -> 8, echo $(( (3+4) - (2+1) )) -> 4 : utile pour effectuer un calclu arithmetic
+    - arithmetic evaluation : utile pour modifier une variable(incrementation, decrementation): ((a++)), ((a--)), ((a+=2)), ((a-=2))
+        exp : a=3, ((a++)), echo $a -> 4
+    rmq: (($a++)) : cette commande produit une erreur
