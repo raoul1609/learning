@@ -1,10 +1,13 @@
-- le chapitre sur les methodes speciales avec python est tres interessant, je dois lire ce chapitre dans plusieurs sources (avec jason, avec xavki, doc officielle)
+- le chapitre sur les methodes speciales avec python est tres interessant, 
+    je dois lire ce chapitre dans plusieurs sources (avec jason, avec xavki, doc officielle)
 - je peux deja creer ma propre exception  -> application directe de la notion d'heritage
 
-- est ce que le while remplace la recursion avec pyhton? ou dans l'Orientée Objet en general? ==> chacun est utile en fonction du contexte d'utilisation
+- est ce que le while remplace la recursion avec pyhton? ou dans l'Orientée Objet en general? 
+    ==> chacun est utile en fonction du contexte d'utilisation
 
-NB : le polymorphisme en python se fait avec les methodes speciales, le principe du polymorphisme est d'avoir des fonctions qui ont comportements differents en fonctions
-des entrees
+NB : le polymorphisme en python se fait avec les methodes speciales, 
+le principe du polymorphisme est d'avoir des fonctions qui ont comportements differents en fonctions des entrees
+
 avec les methodes speciales, il est possible redefinir le comportement des des operateurs
 
 
@@ -29,4 +32,14 @@ yield :
     - Bibliothèques tierces comme Pandas, Dask et PySpark.
     - Coroutines avec async/await.
 
-Ces outils permettent de retarder les calculs ou le chargement de données jusqu'à ce qu'ils soient nécessaires, ce qui améliore l'efficacité et réduit l'utilisation de la mémoire.
+Ces outils permettent de retarder les calculs ou le chargement de données jusqu'à ce qu'ils soient nécessaires, 
+ce qui améliore l'efficacité et réduit l'utilisation de la mémoire.
+
+# a quoi sert une methode statique dans une classe ou sur les instances de cette classe ?
+- la philosophie d'un dev backend ?
+- comment securiser les API ? les nouvelles tandances pour securiser les API ?
+- les API getways ?
+- les sytemes de caching ?
+- optimisation du code backend ?
+- un dev backend c'est quoi : optimisation, performance, securite, evolution
+- principes du CI/CD, le pb que cela vient ressoudre ?
