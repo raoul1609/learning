@@ -1,15 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App, { Exo1, TestProps, MyComponent, TodoList } from './App.jsx'
+import App from './App.jsx'
+import Gallery from './exo_component/test.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <MyComponent>
-      <TodoList />
-    </MyComponent>
-    <Exo1 />
 
-    <TestProps/>
+    <App/>
+    <Gallery/>
     
   </StrictMode>,
 )

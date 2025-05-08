@@ -32,14 +32,4 @@ yield :
     - Bibliothèques tierces comme Pandas, Dask et PySpark.
     - Coroutines avec async/await.
 
-Ces outils permettent de retarder les calculs ou le chargement de données jusqu'à ce qu'ils soient nécessaires, 
-ce qui améliore l'efficacité et réduit l'utilisation de la mémoire.
-
-# a quoi sert une methode statique dans une classe ou sur les instances de cette classe ?
-- la philosophie d'un dev backend ?
-- comment securiser les API ? les nouvelles tandances pour securiser les API ?
-- les API getways ?
-- les sytemes de caching ?
-- optimisation du code backend ?
-- un dev backend c'est quoi : optimisation, performance, securite, evolution
-- principes du CI/CD, le pb que cela vient ressoudre ?
+Ces outils permettent de retarder les calculs ou le chargement de données jusqu'à ce qu'ils soient nécessaires, ce qui améliore l'efficacité et réduit l'utilisation de la mémoire.
