@@ -40,3 +40,38 @@ pour enchainer les commandes, on utilise le ;
     - arithmetic evaluation : utile pour modifier une variable(incrementation, decrementation): ((a++)), ((a--)), ((a+=2)), ((a-=2))
         exp : a=3, ((a++)), echo $a -> 4
     rmq: (($a++)) : cette commande produit une erreur
+
+# effectuer les test en bash 
+    - avec test et avec les []
+    - la commande $? permet de verifier le statut de l'execution d'une commande bash 
+        0 --> succes et [1..255] -> echec
+    exp : [ -d un_chemin ]; echo $? : commande avec verification de statut d'execution qui dit si le chemin est un repertoire
+          [ "cat" = "dog" ]; echo $? : test egalite entre deux chaines de caracteres
+          nb : remarquez l'espace aux abords de []
+    - [[ ]] : permet aussi de faire les tests, en plus de [], il permet d'ecrire plus d'une condition, combiner avec le && et || 
+        operateurs logiques
+    - expression reguliere : [ "raoul" =~ "ra.*" ]; echo $? -> 0
+
+
+# affichage et formattage : 
+- echo pour l'affichage 
+- printf aussi pour l'affichage, mais avec plus d'options : 
+    - printf "la somme equivalente est %d" $(( 2 + 3))
+    - %d -> digit 
+    - %s -> string
+
+# working with arrays : 
+    - il existe : 
+        - index arrays : declare -a index_arrays=("banana" "apple" "orange"), element accessible avec leurs indices
+
+            - echo ${index_arrays[index]} : permet d'acceder a un element de l'array
+            - echo ${index_arrays[@]} :     permet d'afficher tous les elements d'un tableau  -> utile pour les boucles for
+
+            - index_arrays[4]="other fruit" ajouter un element au tableau
+            - index_arrays+=("mango") : adding value to the array
+
+            - nb : les indexes commencent a 1
+
+        - associative arrays : declare -A assoc_arrays ; disposes sous forme de cle valeur
+            - assoc_arrays[name]="Raoul"                   -> une simple cle s'ecrit sans les quottes
+            - assoc_arrays["nom de famille"]="Neudjieu"    -> une cle ecrite une avec plus d'un mot doit s'ecrire dans les quottes
