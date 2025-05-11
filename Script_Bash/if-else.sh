@@ -1,18 +1,22 @@
 #!/bin/bash
 
-echo "this script do an if/else condition"
+declare -i a=3 
 
-echo "what is the root user id ?"
-# we consider that the uid of the root is 0
-# we will check if the user enter the right id.
-
-read id
- 
-if [ 0 -eq "$id" ]
-then
-    echo "you are the root, so you have all the privileges"
+echo "facon standard d'ecrire les conditions avec if/then/else/fi et les []"
+if [[ $a -lt 4 ]] 
+then 
+    echo "$a est plus petit que 4"
 else 
-    echo "you are not the root."
+    echo "$a est plus grand que 4"
+fi 
+
+echo "autre facon d'ecrire une condition avec if/then/else/fi"
+
+if (($a > 4))
+then 
+    echo "$a more thant 4"
+else 
+    echo "$a less than 4"
 fi
 
 

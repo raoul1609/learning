@@ -1,0 +1,15 @@
+boucle.sh
+dossier_personnel
+for_loops.sh
+if-else.sh
+length.sh
+notes.txt
+prova1.sh
+results.txt
+strings.sh
+sum.sh
+while_and_until_loops.sh
+nous allons effectuer la somme de deux nombres
+entre le premier nombre: 
+entre le deuxieme nombre: 
+la somme est de: 45

@@ -75,3 +75,12 @@ pour enchainer les commandes, on utilise le ;
         - associative arrays : declare -A assoc_arrays ; disposes sous forme de cle valeur
             - assoc_arrays[name]="Raoul"                   -> une simple cle s'ecrit sans les quottes
             - assoc_arrays["nom de famille"]="Neudjieu"    -> une cle ecrite une avec plus d'un mot doit s'ecrire dans les quottes
+
+# Control Structures 
+    avec if/then/else/fi 
+
+# Loops: while and until loop 
+    while loops whether the condition is true 
+    until looping wheter the condition is false 
+
+# looping with for
