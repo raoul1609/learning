@@ -83,4 +83,6 @@ pour enchainer les commandes, on utilise le ;
     while loops whether the condition is true 
     until looping wheter the condition is false 
 
-# looping with for
+# exemple d'utilisation de la commande grep : 
+    grep -E -o "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" fichier.log.txt  > ip.txt
+     permet d'extraire les adresses ips dans un fichier donnee, ceci met en evidence les expressions regulieres dans le bash 
