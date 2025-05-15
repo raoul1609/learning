@@ -75,4 +75,18 @@ pour enchainer les commandes, on utilise le ;
         - associative arrays : declare -A assoc_arrays ; disposes sous forme de cle valeur
             - assoc_arrays[name]="Raoul"                   -> une simple cle s'ecrit sans les quottes
             - assoc_arrays["nom de famille"]="Neudjieu"    -> une cle ecrite une avec plus d'un mot doit s'ecrire dans les quottes
+<<<<<<< HEAD
 # difference entre zsh et bash ? .bashrc et .zbashrc
+=======
+
+# Control Structures 
+    avec if/then/else/fi 
+
+# Loops: while and until loop 
+    while loops whether the condition is true 
+    until looping wheter the condition is false 
+
+# exemple d'utilisation de la commande grep : 
+    grep -E -o "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" fichier.log.txt  > ip.txt
+     permet d'extraire les adresses ips dans un fichier donnee, ceci met en evidence les expressions regulieres dans le bash 
+>>>>>>> a9399d39bd729f8666f0ad81ee4ccb3731357040
